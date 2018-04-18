@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ACEDrivingSchool.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ACEDrivingSchool.Controllers
 {
@@ -62,11 +63,48 @@ namespace ACEDrivingSchool.Controllers
         }
 
         //
-        // POST: /Account/Login
+        // POST: /Account/CustomerLogin
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
+            }
+        }
+
+        // GET: /Account/StaffLogin
+        [AllowAnonymous]
+        public ActionResult StaffLogin(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+        // POST: /Account/StaffLogin
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> StaffLogin(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -151,10 +189,29 @@ namespace ACEDrivingSchool.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                //Creates a new customer
+                var user = new Customer
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    SecondName = model.SecondName,
+                    AddressLine1 = model.AddressLine1,
+                    AddressLine2 = model.AddressLine2,
+                    Postcode = model.Postcode,
+                    HomePhoneNumber = model.HomePhoneNumber,
+                    MobilePhoneNumber = model.MobilePhoneNumber,
+                    DrivingLicenceNumber = model.DrivingLicenceNumber,
+                    DateOfBirth = model.DateOfBirth,
+                    Credit = model.Credit
+                    
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    //assigns user the customer role
+                    await UserManager.AddToRoleAsync(user.Id, RoleNameConstants.IsCustomer);
+
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
