@@ -9,5 +9,6 @@ namespace ACEDrivingSchool.Models
     {
         public const string Admin = "Admin";
         public const string IsStaff = "IsStaff";
+        public const string IsCustomer = "IsCustomer";
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ACEDrivingSchool.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ACEDrivingSchool.Controllers
 {
@@ -188,10 +189,29 @@ namespace ACEDrivingSchool.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new Customer { UserName = model.Email, Email = model.Email };
+                //Creates a new customer
+                var user = new Customer
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    SecondName = model.SecondName,
+                    AddressLine1 = model.AddressLine1,
+                    AddressLine2 = model.AddressLine2,
+                    Postcode = model.Postcode,
+                    HomePhoneNumber = model.HomePhoneNumber,
+                    MobilePhoneNumber = model.MobilePhoneNumber,
+                    DrivingLicenceNumber = model.DrivingLicenceNumber,
+                    DateOfBirth = model.DateOfBirth,
+                    Credit = model.Credit
+                    
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    //assigns user the customer role
+                    await UserManager.AddToRoleAsync(user.Id, RoleNameConstants.IsCustomer);
+
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771

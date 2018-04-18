@@ -93,7 +93,7 @@ namespace ACEDrivingSchool.Models
         [Display(Name = "Address Line 1")]
         public string AddressLine1 { get; set; }
 
-        [Required]
+        
         [Display(Name = "Address Line 2")]
         public string AddressLine2 { get; set; }
 

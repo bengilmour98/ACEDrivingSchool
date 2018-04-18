@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ACEDrivingSchool.Models;
 
 namespace ACEDrivingSchool.Controllers
 {
@@ -12,11 +13,14 @@ namespace ACEDrivingSchool.Controllers
         // GET: Customer
         
        
-        [Authorize]
+        
         public ActionResult CustomerHome()
         {
+            if (User.IsInRole(RoleNameConstants.IsCustomer))
+                return View("CustomerHome");
 
-            return View();
+            return Redirect("/Account/Login");
+            
         }
     }
 }

@@ -13,7 +13,7 @@ namespace ACEDrivingSchool.Controllers
         
         public ActionResult StaffHome()
         {
-            if(User.IsInRole(RoleNameConstants.IsStaff))
+            if(User.IsInRole(RoleNameConstants.IsStaff) || User.IsInRole(RoleNameConstants.Admin))
                 return View("StaffHome");
 
             return Redirect("/Account/StaffLogin");
