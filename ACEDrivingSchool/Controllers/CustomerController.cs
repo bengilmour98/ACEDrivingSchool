@@ -6,13 +6,17 @@ using System.Web.Mvc;
 
 namespace ACEDrivingSchool.Controllers
 {
-    public class HomeController : Controller
+
+    public class CustomerController : Controller
     {
-        public ActionResult Index()
+        // GET: Customer
+        
+       
+        [Authorize]
+        public ActionResult CustomerHome()
         {
+
             return View();
         }
-
-        
     }
 }
