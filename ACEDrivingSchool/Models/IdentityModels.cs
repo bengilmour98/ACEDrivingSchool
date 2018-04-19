@@ -23,6 +23,11 @@ namespace ACEDrivingSchool.Models
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Staff> StaffMembers { get; set; }
 
+        public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<Duration> Durations { get; set; }
+        public DbSet<LessonType> LessonTypes { get; set; }
+        public DbSet<TransmissionType> TransmissionTypes { get; set; }
+
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

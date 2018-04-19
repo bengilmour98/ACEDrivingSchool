@@ -211,17 +211,45 @@
     <Compile Include="Migrations\201804161343476_AddUserDetailsToAspnetUsers.Designer.cs">
       <DependentUpon>201804161343476_AddUserDetailsToAspnetUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804191841470_AddingLessons.cs" />
+    <Compile Include="Migrations\201804191841470_AddingLessons.Designer.cs">
+      <DependentUpon>201804191841470_AddingLessons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804191843115_SeedLessonTypes.cs" />
+    <Compile Include="Migrations\201804191843115_SeedLessonTypes.Designer.cs">
+      <DependentUpon>201804191843115_SeedLessonTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804191845510_SeedDurations.cs" />
+    <Compile Include="Migrations\201804191845510_SeedDurations.Designer.cs">
+      <DependentUpon>201804191845510_SeedDurations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804191922339_SeedTransmissionTypes.cs" />
+    <Compile Include="Migrations\201804191922339_SeedTransmissionTypes.Designer.cs">
+      <DependentUpon>201804191922339_SeedTransmissionTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804191927453_FixingByteIssuesForLesson.cs" />
+    <Compile Include="Migrations\201804191927453_FixingByteIssuesForLesson.Designer.cs">
+      <DependentUpon>201804191927453_FixingByteIssuesForLesson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804192016042_UpdateLessonDateTime.cs" />
+    <Compile Include="Migrations\201804192016042_UpdateLessonDateTime.Designer.cs">
+      <DependentUpon>201804192016042_UpdateLessonDateTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Duration.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Lesson.cs" />
+    <Compile Include="Models\LessonType.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\RoleNameConstants.cs" />
     <Compile Include="Models\Staff.cs" />
+    <Compile Include="Models\TransmissionType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\BookALessonViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-lumen.css" />
@@ -286,6 +314,7 @@
     <Content Include="Views\Staff\StaffHome.cshtml" />
     <Content Include="Views\Customer\CustomerHome.cshtml" />
     <Content Include="Views\Account\StaffLogin.cshtml" />
+    <Content Include="Views\Customer\BookALesson.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -304,6 +333,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804161343476_AddUserDetailsToAspnetUsers.resx">
       <DependentUpon>201804161343476_AddUserDetailsToAspnetUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804191841470_AddingLessons.resx">
+      <DependentUpon>201804191841470_AddingLessons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804191843115_SeedLessonTypes.resx">
+      <DependentUpon>201804191843115_SeedLessonTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804191845510_SeedDurations.resx">
+      <DependentUpon>201804191845510_SeedDurations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804191922339_SeedTransmissionTypes.resx">
+      <DependentUpon>201804191922339_SeedTransmissionTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804191927453_FixingByteIssuesForLesson.resx">
+      <DependentUpon>201804191927453_FixingByteIssuesForLesson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804192016042_UpdateLessonDateTime.resx">
+      <DependentUpon>201804192016042_UpdateLessonDateTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
