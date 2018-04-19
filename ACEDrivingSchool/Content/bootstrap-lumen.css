@@ -70,7 +70,7 @@ dfn {
 h1 {
   font-size: 2em;
   margin: 0.67em 0;
-    text-align: center;
+    
 }
 mark {
   background: #ff0;
@@ -1191,8 +1191,7 @@ h6,
   font-family: inherit;
   font-weight: 400;
   line-height: 1.1;
-  color: #333333;
-    text-align: center;
+  color: #333333;   
 }
 h1 small,
 h2 small,

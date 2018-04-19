@@ -8,20 +8,24 @@
 
 </div>
 
-<div class="row">
-    <div class="col-md-3">
-        @Html.ActionLink("Book a lesson", "BookALesson", "Customer", null, new { @class = "btn btn-primary" })
-    </div>
+<table class="table">
+    <tr>
+        <td style="text-align: center">
+            @Html.ActionLink("Book a lesson", "BookALesson", "Customer", null, new { @class = "btn btn-primary" })
+        </td>
+    
+        <td style="text-align: center">
+            @Html.ActionLink("Cancel a lesson", "CancelALesson", "Customer", null, new { @class = "btn btn-primary" })
+        </td>
+    </tr>
+    
+    <tr>
+        <td style="text-align: center">
+            @Html.ActionLink("Pay for a lesson", "PayForLesson", "Customer", null, new { @class = "btn btn-primary" })
+        </td>
 
-    <div class="col-md-3">
-        @Html.ActionLink("Cancel a lesson", "CancelALesson", "Customer", null, new { @class = "btn btn-primary" })
-    </div>
-
-    <div class="col-md-3">
-        @Html.ActionLink("Pay for a lesson", "PayForLesson", "Customer", null, new { @class = "btn btn-primary" })
-    </div>
-
-    <div class="col-md-3">
-        @Html.ActionLink("Edit details", "EditDetails", "Customer", null, new { @class = "btn btn-primary" })
-    </div>
-</div>
+        <td style="text-align: center">
+            @Html.ActionLink("Edit details", "EditDetails", "Customer", null, new { @class = "btn btn-primary" })
+        </td>
+    </tr>
+</table>
