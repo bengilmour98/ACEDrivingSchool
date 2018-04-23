@@ -315,6 +315,7 @@
     <Content Include="Views\Customer\CustomerHome.cshtml" />
     <Content Include="Views\Account\StaffLogin.cshtml" />
     <Content Include="Views\Customer\BookALesson.cshtml" />
+    <Content Include="Views\Customer\PayLesson.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

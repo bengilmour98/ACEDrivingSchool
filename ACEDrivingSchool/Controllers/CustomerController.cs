@@ -51,11 +51,32 @@ namespace ACEDrivingSchool.Controllers
             return View("BookALesson", viewModel);
         }
 
-        public ActionResult Save()
+        [HttpPost]
+        public ActionResult Save(FormCollection form)
         {
+            var nowOrLater = form["submitButton"];
+
+            if (nowOrLater == "PayNow")
+            {
+                return RedirectToAction("PayLesson", "Customer");
+            }
+            else if(nowOrLater == "PayLater")
+            {
+                return RedirectToAction("CustomerHome", "Customer");
+            }
+            else
+            {
+                return RedirectToAction("CustomerHome", "Customer");
+            }
 
 
-            return RedirectToAction("CustomerHome", "Customer");
+            
+        }
+
+
+        public ActionResult PayLesson()
+        {
+            return View();
         }
     }
 }
