@@ -235,6 +235,26 @@
     <Compile Include="Migrations\201804192016042_UpdateLessonDateTime.Designer.cs">
       <DependentUpon>201804192016042_UpdateLessonDateTime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804241040528_LessonChanges.cs" />
+    <Compile Include="Migrations\201804241040528_LessonChanges.Designer.cs">
+      <DependentUpon>201804241040528_LessonChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804241052095_RemoveTimeCreateDateTime.cs" />
+    <Compile Include="Migrations\201804241052095_RemoveTimeCreateDateTime.Designer.cs">
+      <DependentUpon>201804241052095_RemoveTimeCreateDateTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804241357092_FixLesson.cs" />
+    <Compile Include="Migrations\201804241357092_FixLesson.Designer.cs">
+      <DependentUpon>201804241357092_FixLesson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804241358508_DateTimeOfLessonNotNullable.cs" />
+    <Compile Include="Migrations\201804241358508_DateTimeOfLessonNotNullable.Designer.cs">
+      <DependentUpon>201804241358508_DateTimeOfLessonNotNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804241535088_ChangeLessonIdToInt.cs" />
+    <Compile Include="Migrations\201804241535088_ChangeLessonIdToInt.Designer.cs">
+      <DependentUpon>201804241535088_ChangeLessonIdToInt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Booking.cs" />
@@ -244,6 +264,7 @@
     <Compile Include="Models\Lesson.cs" />
     <Compile Include="Models\LessonType.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\RandomClass.cs" />
     <Compile Include="Models\RoleNameConstants.cs" />
     <Compile Include="Models\Staff.cs" />
     <Compile Include="Models\TransmissionType.cs" />
@@ -352,6 +373,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804192016042_UpdateLessonDateTime.resx">
       <DependentUpon>201804192016042_UpdateLessonDateTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804241040528_LessonChanges.resx">
+      <DependentUpon>201804241040528_LessonChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804241052095_RemoveTimeCreateDateTime.resx">
+      <DependentUpon>201804241052095_RemoveTimeCreateDateTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804241357092_FixLesson.resx">
+      <DependentUpon>201804241357092_FixLesson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804241358508_DateTimeOfLessonNotNullable.resx">
+      <DependentUpon>201804241358508_DateTimeOfLessonNotNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804241535088_ChangeLessonIdToInt.resx">
+      <DependentUpon>201804241535088_ChangeLessonIdToInt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

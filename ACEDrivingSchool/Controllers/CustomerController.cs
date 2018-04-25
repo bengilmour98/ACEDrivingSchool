@@ -52,25 +52,75 @@ namespace ACEDrivingSchool.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save(FormCollection form)
+        [ValidateAntiForgeryToken]
+        public ActionResult Save(Lesson lesson, FormCollection form)
         {
+
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new BookALessonViewModel
+                {
+                    Lesson = lesson,
+                    Durations = _context.Durations.ToList(),
+                    LessonTypes = _context.LessonTypes.ToList(),
+                    TransmissionTypes = _context.TransmissionTypes.ToList()
+                };
+
+                return View("BookALesson", viewModel);
+            }
+
             var nowOrLater = form["submitButton"];
 
             if (nowOrLater == "PayNow")
             {
+                if (lesson.Id == 0)
+                {
+                    _context.Lessons.Add(lesson);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    var lessonInDb = _context.Lessons.Single(c => c.Id == lesson.Id);
+
+                    lessonInDb.DateTimeOfLesson = lesson.DateTimeOfLesson;
+                    lessonInDb.DurationId = lesson.DurationId;
+                    lessonInDb.LessonTypeId = lesson.LessonTypeId;
+                    lessonInDb.TransmissionTypeId = lesson.TransmissionTypeId;
+                    lessonInDb.Cost = lesson.Cost;
+                    lessonInDb.Paid = lesson.Paid;
+
+
+                }
+
                 return RedirectToAction("PayLesson", "Customer");
             }
-            else if(nowOrLater == "PayLater")
-            {
-                return RedirectToAction("CustomerHome", "Customer");
-            }
+
             else
             {
+                if (lesson.Id == 0)
+                {
+                    _context.Lessons.Add(lesson);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    var lessonInDb = _context.Lessons.Single(c => c.Id == lesson.Id);
+
+                    lessonInDb.DateTimeOfLesson = lesson.DateTimeOfLesson;
+                    lessonInDb.DurationId = lesson.DurationId;
+                    lessonInDb.LessonTypeId = lesson.LessonTypeId;
+                    lessonInDb.TransmissionTypeId = lesson.TransmissionTypeId;
+                    lessonInDb.Cost = lesson.Cost;
+                    lessonInDb.Paid = lesson.Paid;
+
+
+                }
+
                 return RedirectToAction("CustomerHome", "Customer");
             }
 
-
             
+
         }
 
 

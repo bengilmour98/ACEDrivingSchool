@@ -4,47 +4,42 @@
 }
 
 <h2>@ViewBag.Title</h2>
-@using (Html.BeginForm("Save", "Customer", FormMethod.Post))
+@using (Html.BeginForm("Save", "Customer"))
 { 
     <div class="form-group">
-        @Html.LabelFor(m => m.Lesson.DateOfLesson)
-
-        @Html.TextBoxFor(m => m.Lesson.DateOfLesson, "{0:d MMM yyyy}", new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Lesson.DateOfLesson, "", new { @class = "text-danger" })
-
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Lesson.TimeOfLesson)
-
-        @Html.TextBoxFor(m => m.Lesson.TimeOfLesson, "{0:t}", new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Lesson.TimeOfLesson, "", new { @class = "text-danger" })
+        @Html.LabelFor(l => l.Lesson.DateTimeOfLesson)
+        
+        @Html.TextBoxFor(l => l.Lesson.DateTimeOfLesson, "{0:d MMM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(l => l.Lesson.DateTimeOfLesson, "", new { @class = "text-danger" })
 
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Lesson.LessonTypeId)
+        @Html.LabelFor(l => l.Lesson.LessonTypeId)
 
-        @Html.DropDownListFor(m => m.Lesson.LessonTypeId, new SelectList(Model.LessonTypes, "Id", "Name"), "Select Lesson Type", new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Lesson.LessonTypeId, "", new { @class = "text-danger" })
-
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Lesson.DurationId)
-
-        @Html.DropDownListFor(m => m.Lesson.DurationId, new SelectList(Model.Durations, "Id", "Name"), "Select Duration", new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Lesson.DurationId, "", new { @class = "text-danger" })
+        @Html.DropDownListFor(l => l.Lesson.LessonTypeId, new SelectList(Model.LessonTypes, "Id", "Name"), "Select Lesson Type", new { @class = "form-control" })
+        @Html.ValidationMessageFor(l => l.Lesson.LessonTypeId, "", new { @class = "text-danger" })
 
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Lesson.TransmissionTypeId)
+        @Html.LabelFor(l => l.Lesson.DurationId)
 
-        @Html.DropDownListFor(m => m.Lesson.TransmissionTypes, new SelectList(Model.TransmissionTypes, "Id", "Name"), "Select Transmission Type", new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Lesson.TransmissionTypes, "", new { @class = "text-danger" })
+        @Html.DropDownListFor(l => l.Lesson.DurationId, new SelectList(Model.Durations, "Id", "Name"), "Select Duration", new { @class = "form-control" })
+        @Html.ValidationMessageFor(l => l.Lesson.DurationId, "", new { @class = "text-danger" })
 
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(l => l.Lesson.TransmissionTypeId)
+
+        @Html.DropDownListFor(l => l.Lesson.TransmissionTypeId, new SelectList(Model.TransmissionTypes, "Id", "Name"), "Select Transmission Type", new { @class = "form-control" })
+        @Html.ValidationMessageFor(l => l.Lesson.TransmissionTypeId, "", new { @class = "text-danger" })
+
+    </div>
+
+    @Html.HiddenFor(l => l.Lesson.Id)
+    @Html.AntiForgeryToken()
 
     <button name="submitButton" value="PayNow" type="submit" class="btn btn-primary">Pay now</button>
     <button name="submitButton" value="PayLater" type="submit" class="btn btn-primary">Pay Later</button>
@@ -52,6 +47,7 @@
 }
 @section scripts
 {
+    @Scripts.Render("~/bundles/jqueryval");
     <script>
         
         
