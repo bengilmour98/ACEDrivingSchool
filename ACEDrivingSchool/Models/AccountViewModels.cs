@@ -118,6 +118,8 @@ namespace ACEDrivingSchool.Models
 
         public int Credit { get; set; }
 
+        
+
     }
 
     public class ResetPasswordViewModel

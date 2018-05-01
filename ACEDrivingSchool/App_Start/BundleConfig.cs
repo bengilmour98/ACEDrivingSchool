@@ -27,6 +27,8 @@ namespace ACEDrivingSchool
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-lumen.css",
                       "~/Content/site.css"));
+
+            
         }
     }
 }

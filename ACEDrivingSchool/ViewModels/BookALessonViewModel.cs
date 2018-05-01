@@ -12,9 +12,13 @@ namespace ACEDrivingSchool.ViewModels
         
         public Lesson Lesson { get; set; }
 
+        public List<int> LessonIds { get; set; }
+
         public IEnumerable<Duration> Durations { get; set; }
         public IEnumerable<LessonType> LessonTypes { get; set; }
         public IEnumerable<TransmissionType> TransmissionTypes { get; set; }
+
+        
 
 
     }
