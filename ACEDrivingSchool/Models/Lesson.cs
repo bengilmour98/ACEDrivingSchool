@@ -25,17 +25,17 @@ namespace ACEDrivingSchool.Models
         public int DurationId { get; set; }
 
         
-        public LessonType LessonTypes { get; set; }
+        //public LessonType LessonTypes { get; set; }
 
         
-        [Display(Name = "Lesson Type")]
-        public int LessonTypeId { get; set; }
+        //[Display(Name = "Lesson Type")]
+        //public int LessonTypeId { get; set; }
 
         
-        public TransmissionType TransmissionTypes { get; set; }
+        //public TransmissionType TransmissionTypes { get; set; }
 
-        [Display(Name = "Transmission Type")]
-        public int TransmissionTypeId { get; set; }
+        //[Display(Name = "Transmission Type")]
+        //public int TransmissionTypeId { get; set; }
 
         
 

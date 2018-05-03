@@ -33,14 +33,14 @@ namespace ACEDrivingSchool.Controllers
             //initialises the variables that will be passed in the view model, to their corresponding values in the database
             var lessonTypes = _context.LessonTypes.ToList();
             var durations = _context.Durations.ToList();
-            var transmissionTypes = _context.TransmissionTypes.ToList();
+            //var transmissionTypes = _context.TransmissionTypes.ToList();
             var viewModel = new BookALessonViewModel
             {
                 Lesson = new Lesson(),
 
-                LessonTypes = lessonTypes,
+                //LessonTypes = lessonTypes,
                 Durations = durations,
-                TransmissionTypes = transmissionTypes
+                //TransmissionTypes = transmissionTypes
             };
 
             return View("BookALesson", viewModel);
@@ -59,8 +59,8 @@ namespace ACEDrivingSchool.Controllers
                     Lesson = lesson,
 
                     Durations = _context.Durations.ToList(),
-                    LessonTypes = _context.LessonTypes.ToList(),
-                    TransmissionTypes = _context.TransmissionTypes.ToList()
+                    //LessonTypes = _context.LessonTypes.ToList(),
+                    //TransmissionTypes = _context.TransmissionTypes.ToList()
                 };
 
                 return View("BookALesson", viewModel);
@@ -82,8 +82,8 @@ namespace ACEDrivingSchool.Controllers
                 Lesson = lesson,
 
                 Durations = _context.Durations.ToList(),
-                LessonTypes = _context.LessonTypes.ToList(),
-                TransmissionTypes = _context.TransmissionTypes.ToList()
+                //LessonTypes = _context.LessonTypes.ToList(),
+                //TransmissionTypes = _context.TransmissionTypes.ToList()
             };
 
             return View("BookALesson", viewModel);

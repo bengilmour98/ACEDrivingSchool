@@ -37,34 +37,12 @@ namespace ACEDrivingSchool.Controllers
 
         }
 
-        public int GetRandomInstructorId(string transmissionType)
-        {
-            int lowestStudentInstructorId = 0;
-
-            var instructors = _context.Instructors.ToList();
-
-            int numberOfStudents = 1000;
-
-            foreach (var instructor in instructors)
-            {
-                if (instructor.NumberOfStudents < numberOfStudents)
-                {
-                    numberOfStudents = instructor.NumberOfStudents;
-                    lowestStudentInstructorId = instructor.Id;
-                }
-            }
-
-            return lowestStudentInstructorId;
-
-        }
+        
 
 
         
 
 
-        public ActionResult PayLesson()
-        {
-            return View();
-        }
+        
     }
 }

@@ -15,8 +15,8 @@ namespace ACEDrivingSchool.ViewModels
         public List<int> LessonIds { get; set; }
 
         public IEnumerable<Duration> Durations { get; set; }
-        public IEnumerable<LessonType> LessonTypes { get; set; }
-        public IEnumerable<TransmissionType> TransmissionTypes { get; set; }
+        //public IEnumerable<LessonType> LessonTypes { get; set; }
+        //public IEnumerable<TransmissionType> TransmissionTypes { get; set; }
 
         
 

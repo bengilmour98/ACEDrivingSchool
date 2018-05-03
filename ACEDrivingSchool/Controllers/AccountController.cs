@@ -81,7 +81,7 @@ namespace ACEDrivingSchool.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("CustomerHome", "Customer");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -119,7 +119,7 @@ namespace ACEDrivingSchool.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("StaffHome", "Staff");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -185,7 +185,30 @@ namespace ACEDrivingSchool.Controllers
         }
 
 
+        public int GetRandomInstructorId()
+        {
+            int lowestStudentInstructorId = 0;
 
+            var instructors = _context.Instructors.ToList();
+
+            int numberOfStudents = 1000;
+
+            foreach (var instructor in instructors)
+            {
+                if (instructor.NumberOfStudents < numberOfStudents)
+                {
+                    numberOfStudents = instructor.NumberOfStudents;
+                    lowestStudentInstructorId = instructor.Id;
+
+                    instructor.NumberOfStudents++;
+                    _context.SaveChanges();
+
+                }
+            }
+
+            return lowestStudentInstructorId;
+
+        }
 
 
         //
@@ -211,7 +234,8 @@ namespace ACEDrivingSchool.Controllers
                     MobilePhoneNumber = model.MobilePhoneNumber,
                     DrivingLicenceNumber = model.DrivingLicenceNumber,
                     DateOfBirth = model.DateOfBirth,
-                    Credit = model.Credit
+                    Credit = model.Credit,
+                    AssignedInstructor = GetRandomInstructorId()
 
 
 
@@ -230,7 +254,7 @@ namespace ACEDrivingSchool.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("CustomerHome", "Customer");
                 }
 
                 AddErrors(result);

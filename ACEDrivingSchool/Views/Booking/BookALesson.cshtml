@@ -43,13 +43,13 @@
 
     
 
-    <div class="form-group">
+    /*<div class="form-group">
         @Html.LabelFor(l => l.Lesson.LessonTypeId)
 
         @Html.DropDownListFor(l => l.Lesson.LessonTypeId, new SelectList(Model.LessonTypes, "Id", "Name"), "Select Lesson Type", new { @class = "form-control" })
         @Html.ValidationMessageFor(l => l.Lesson.LessonTypeId, "", new { @class = "text-danger" })
 
-    </div>
+    </div>*/
 
     <div class="form-group">
         @Html.LabelFor(l => l.Lesson.DurationId)
@@ -59,13 +59,13 @@
 
     </div>
 
-    <div class="form-group">
+    /*<div class="form-group">
         @Html.LabelFor(l => l.Lesson.TransmissionTypeId)
 
         @Html.DropDownListFor(l => l.Lesson.TransmissionTypeId, new SelectList(Model.TransmissionTypes, "Id", "Name"), "Select Transmission Type", new { @class = "form-control" })
         @Html.ValidationMessageFor(l => l.Lesson.TransmissionTypeId, "", new { @class = "text-danger" })
 
-    </div>
+    </div>*/
 
     @Html.HiddenFor(l => l.Lesson.Id)
     @Html.AntiForgeryToken()
