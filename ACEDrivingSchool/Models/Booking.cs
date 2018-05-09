@@ -9,24 +9,14 @@ namespace ACEDrivingSchool.Models
 {
     public class Booking
     {
-        //public int Id { get; set; }
+        public int Id { get; set; }
 
         public DateTime BookingDate { get; set; }
 
         public double TotalPrice { get; set; }
 
         public ApplicationUser Customer { get; set; }
-
-        
-        [Key, Column(Order = 1)]
         public string CustomerId { get; set; }
-
-        public Lesson Lesson { get; set; }
-
-        
-        [Key, Column(Order = 0)]
-
-        public int LessonId { get; set; }
 
         
 

@@ -11,12 +11,12 @@ namespace ACEDrivingSchool.Controllers
     public class BookingController : Controller
     {
         private ApplicationDbContext _context;
-        private List<Lesson> addedLessons;
+        
 
         public BookingController()
         {
             _context = new ApplicationDbContext();
-            addedLessons = new List<Lesson>();
+            
         }
 
         protected override void Dispose(bool disposing)
@@ -24,14 +24,13 @@ namespace ACEDrivingSchool.Controllers
             _context.Dispose();
         }
 
+
+
         public ActionResult BookALesson()
         {
-
-
-
-
+            
             //initialises the variables that will be passed in the view model, to their corresponding values in the database
-            var lessonTypes = _context.LessonTypes.ToList();
+            //var lessonTypes = _context.LessonTypes.ToList();
             var durations = _context.Durations.ToList();
             //var transmissionTypes = _context.TransmissionTypes.ToList();
             var viewModel = new BookALessonViewModel
@@ -46,7 +45,18 @@ namespace ACEDrivingSchool.Controllers
             return View("BookALesson", viewModel);
         }
 
-        [HttpPost]
+        
+        public JsonResult GetLessons()
+        {
+            var lessons = _context.Lessons.ToList();
+
+            return new JsonResult { Data = lessons, JsonRequestBehavior = JsonRequestBehavior.AllowGet};
+
+
+        }
+
+
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddLesson(Lesson lesson)
         {
@@ -69,11 +79,11 @@ namespace ACEDrivingSchool.Controllers
             
             if (lesson.Id == 0)
             {
-                addedLessons.Add(lesson);
+                
 
 
-                /*_context.Lessons.Add(lesson);
-                _context.SaveChanges();*/
+                _context.Lessons.Add(lesson);
+                _context.SaveChanges();
             }
 
 
@@ -88,6 +98,6 @@ namespace ACEDrivingSchool.Controllers
 
             return View("BookALesson", viewModel);
             
-        }
+        }*/
     }
 }

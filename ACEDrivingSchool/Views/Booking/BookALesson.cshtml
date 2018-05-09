@@ -1,23 +1,17 @@
 ﻿<head>
-    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
-    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <link rel="stylesheet" href="~/Content/fullcalendar.css" />
+    
+    
+    
 
-    <link href="~/Content/jquery-ui-timepicker-addon.min.css" rel="stylesheet" />
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/fullcalendar/fullcalendar.min.js"></script>
 
-    <script src="~/Scripts/jquery-ui-timepicker-addon.min.js"></script>
+    
 
-    <script type="text/javascript">
-        $(function () {
-            $(".date-picker").datetimepicker({
-                dateFormat: 'dd-M-yy',
-                controlType: 'select',
-                timeFormat: 'hh:mm TT'
-            });
 
-        });
 
-    </script>
+
 </head>
 
 @using System.Data.Entity.Core.Common.EntitySql
@@ -28,67 +22,87 @@
 }
 
 <h2>@ViewBag.Title</h2>
-@using (Html.BeginForm("AddLesson", "Booking", new { name = "BookingForm", id = "BookingForm" }))
-{ 
-    <div class="form-group">
-        @Html.LabelFor(l => l.Lesson.DateTimeOfLesson)
-        
-        @Html.EditorFor(l => l.Lesson.DateTimeOfLesson, 
-            new { htmlAttributes = new {@class = "form-control date-picker" } })
-        
-        @Html.ValidationMessageFor(l => l.Lesson.DateTimeOfLesson, "", new { @class = "text-danger" })
 
+<div id="calendar"></div>
 
+<div id="myModel" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="model">&times;</button>
+                <h4 class="modal-title"><span id="eventTitle"></span></h4>
+            </div>
+
+            <div class="modal-body">
+                <p id="pDetails"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="model">Close</button>
+            </div>
+
+        </div>
     </div>
-
-    
-
-    /*<div class="form-group">
-        @Html.LabelFor(l => l.Lesson.LessonTypeId)
-
-        @Html.DropDownListFor(l => l.Lesson.LessonTypeId, new SelectList(Model.LessonTypes, "Id", "Name"), "Select Lesson Type", new { @class = "form-control" })
-        @Html.ValidationMessageFor(l => l.Lesson.LessonTypeId, "", new { @class = "text-danger" })
-
-    </div>*/
-
-    <div class="form-group">
-        @Html.LabelFor(l => l.Lesson.DurationId)
-
-        @Html.DropDownListFor(l => l.Lesson.DurationId, new SelectList(Model.Durations, "Id", "Name"), "Select Duration", new { @class = "form-control" })
-        @Html.ValidationMessageFor(l => l.Lesson.DurationId, "", new { @class = "text-danger" })
-
-    </div>
-
-    /*<div class="form-group">
-        @Html.LabelFor(l => l.Lesson.TransmissionTypeId)
-
-        @Html.DropDownListFor(l => l.Lesson.TransmissionTypeId, new SelectList(Model.TransmissionTypes, "Id", "Name"), "Select Transmission Type", new { @class = "form-control" })
-        @Html.ValidationMessageFor(l => l.Lesson.TransmissionTypeId, "", new { @class = "text-danger" })
-
-    </div>*/
-
-    @Html.HiddenFor(l => l.Lesson.Id)
-    @Html.AntiForgeryToken()
-
-
-    
-    
-
-    <button name="submitButton" value="AddLesson" type="submit" class="btn btn-primary">Add lesson</button>
-    //<button name="submitButton" value="PayNow" type="submit" class="btn btn-primary">Pay now</button>
-    //<button name="submitButton" value="PayLater" type="submit" class="btn btn-primary">Pay Later</button>
-
-    
-    
-
-}
+</div>
 
 
 @section scripts
 {
-    @Scripts.Render("~/bundles/jqueryval");
 
-    
+    <script>
+        $(document).ready(function () {
+
+
+            var lessons = [];
+
+            $.ajax({
+                type: "GET",
+                url: '/booking/GetLessons',
+                success: function(data) {
+                    $.each(data,
+                        function(i, v) {
+                            lessons.push({
+                                title: 'Lesson',
+                                description: moment(v.DateTimeOfLesson),
+                                start: moment(v.DateTimeOfLesson),
+                                Duration: v.DurationId = 1 ? '1 Hour' : '2 Hours'
+                            });
+                        });
+                    
+                    generateCalendar(lessons);
+                },
+                error: function(error) {
+                    alert('Failed');
+                }
+            });
+
+            function generateCalendar(lessons) {
+                
+                $('#calendar').fullCalendar('destroy');
+
+                $('#calendar').fullCalendar({
+                    contentHeight: 400,
+                    defaultDate: new Date(),
+                    timeFormat: 'h(:mm)a',
+                    header: {
+                        left: 'prev, next today',
+                        center: 'title',
+                        right: 'month,basicWeek,basicDay,agenda'
+                    },
+                    eventLimit: true,
+                    eventColor: '#378006',
+                    events: lessons,
+                    eventClick: function (calEvent, jsEvent, view) {
+                        $('#myModel #eventTitle').text(calEvent.title);
+                        var $description = $('<div/>');
+                        $description.append($('<p/>').html('<b>Date/Time:<b/>' + calEvent.dateTimeOfLesson.format("DD-MM HH:mm a")));
+                        $description.append($('<p/>').html('<b>Duration:<b/>' + calEvent.duration));
+                        $description.append($('<p/>').html('<b>Paid:<b/>' + calEvent.paid));
+                    }
+                });
+            }
+        });
+    </script>
+
 }
 
-    
+

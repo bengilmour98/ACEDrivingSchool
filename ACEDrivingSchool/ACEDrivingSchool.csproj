@@ -326,6 +326,14 @@
     <Compile Include="Migrations\201805031135215_RemoveLessonType.Designer.cs">
       <DependentUpon>201805031135215_RemoveLessonType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805041238399_AddLinkBetweenBookingAndLesson.cs" />
+    <Compile Include="Migrations\201805041238399_AddLinkBetweenBookingAndLesson.Designer.cs">
+      <DependentUpon>201805041238399_AddLinkBetweenBookingAndLesson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805041253451_AddInstructorIdToLesson.cs" />
+    <Compile Include="Migrations\201805041253451_AddInstructorIdToLesson.Designer.cs">
+      <DependentUpon>201805041253451_AddInstructorIdToLesson.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Booking.cs" />
@@ -698,6 +706,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805031135215_RemoveLessonType.resx">
       <DependentUpon>201805031135215_RemoveLessonType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805041238399_AddLinkBetweenBookingAndLesson.resx">
+      <DependentUpon>201805041238399_AddLinkBetweenBookingAndLesson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805041253451_AddInstructorIdToLesson.resx">
+      <DependentUpon>201805041253451_AddInstructorIdToLesson.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -13,18 +13,27 @@ namespace ACEDrivingSchool.Models
 
         [Required]
         [Display(Name = "Date of lesson")]
-        
         public DateTime? DateTimeOfLesson { get; set; }
 
 
-        
         public Duration Durations { get; set; }
 
-        
         [Display(Name = "Duration")]
         public int DurationId { get; set; }
 
+
+        public Booking Booking { get; set; }
+
+        [Display(Name = "Booking ID")]
+        public int BookingId { get; set; }
+
+        [Required]
+        public bool Paid { get; set; }
+
         
+        public int InstructorId { get; set; }
+
+
         //public LessonType LessonTypes { get; set; }
 
         
@@ -38,14 +47,6 @@ namespace ACEDrivingSchool.Models
         //public int TransmissionTypeId { get; set; }
 
         
-
-
-
-        [Required]
-        public Double Cost { get; set; }
-
-        [Required]
-        public bool Paid { get; set; }
 
 
 
