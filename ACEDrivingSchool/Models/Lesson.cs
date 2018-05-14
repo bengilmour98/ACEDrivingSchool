@@ -15,23 +15,25 @@ namespace ACEDrivingSchool.Models
         [Display(Name = "Date of lesson")]
         public DateTime? DateTimeOfLesson { get; set; }
 
-
-        public Duration Durations { get; set; }
+        public Duration Duration { get; set; }
 
         [Display(Name = "Duration")]
         public int DurationId { get; set; }
-
-
-        public Booking Booking { get; set; }
-
-        [Display(Name = "Booking ID")]
-        public int BookingId { get; set; }
-
+        
         [Required]
         public bool Paid { get; set; }
 
         
         public int InstructorId { get; set; }
+
+        public DateTime BookingDate { get; set; }
+
+        
+
+        public ApplicationUser Customer { get; set; }
+
+        [Display(Name = "Customer ID")]
+        public string CustomerId { get; set; }
 
 
         //public LessonType LessonTypes { get; set; }

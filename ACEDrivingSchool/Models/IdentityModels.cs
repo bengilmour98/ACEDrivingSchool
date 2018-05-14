@@ -24,9 +24,8 @@ namespace ACEDrivingSchool.Models
         public DbSet<Staff> StaffMembers { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
 
-        public DbSet<Booking> Bookings { get; set; }
-        public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Duration> Durations { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
         public DbSet<LessonType> LessonTypes { get; set; }
         public DbSet<TransmissionType> TransmissionTypes { get; set; }
         
