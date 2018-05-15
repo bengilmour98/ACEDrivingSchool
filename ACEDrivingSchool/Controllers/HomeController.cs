@@ -8,6 +8,11 @@ namespace ACEDrivingSchool.Controllers
 {
     public class HomeController : Controller
     {
+
+        /// <summary>
+        /// A method to display the index page of the web app.
+        /// </summary>
+        /// <returns>The index view for the web app.</returns>
         public ActionResult Index()
         {
             return View();

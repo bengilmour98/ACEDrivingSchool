@@ -29,7 +29,10 @@ namespace ACEDrivingSchool.Controllers
         
         // GET: Customer
         
-        //Checks that the user is logged in as a customer before they are able to navigate to the customer home page
+        /// <summary>
+        /// A method to display the customer home. The program then checks to see if the user is part of the customer role
+        /// </summary>
+        /// <returns>Returns the customer home view.</returns>
         [Authorize(Roles = RoleNameConstants.IsCustomer)]
         public ActionResult CustomerHome()
         {

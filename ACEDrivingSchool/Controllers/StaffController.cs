@@ -10,7 +10,10 @@ namespace ACEDrivingSchool.Controllers
     public class StaffController : Controller
     {
         // GET: Staff
-        //If the user is part of the IsStaff or Admin role then they are able to view the staff home
+        /// <summary>
+        /// A method to navigate to the staff home. The user is checked to make sure they are part of the Staff or Admin role
+        /// </summary>
+        /// <returns>The staff home view if the user is a staff member, and the staff login if they are not.</returns>
         public ActionResult StaffHome()
         {
             if(User.IsInRole(RoleNameConstants.IsStaff) || User.IsInRole(RoleNameConstants.Admin))

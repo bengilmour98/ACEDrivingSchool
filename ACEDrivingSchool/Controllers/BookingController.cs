@@ -27,13 +27,30 @@ namespace ACEDrivingSchool.Controllers
         }
 
 
-
+        /// <summary>
+        /// Method to load the page for booking a lesson
+        /// </summary>
+        /// <returns>BookALesson view</returns>
         public ActionResult BookALesson()
         {
-            return View("BookALesson");
+            var durations = _context.Durations.ToList();
+            var customers = _context.Customers.ToList();
+
+            var model = new BookALessonViewModel
+            {
+                Lesson = new Lesson(),
+                Durations = durations,
+                Customers = customers
+            };
+
+
+            return View("BookALesson", model);
         }
 
-        
+        /// <summary>
+        /// Method to retrieve all lessons from the database
+        /// </summary>
+        /// <returns>A JsonResult of all lessons in the database</returns>
         public JsonResult GetAllLessons()
         {
             var lessons = _context.Lessons.ToList();
@@ -43,6 +60,10 @@ namespace ACEDrivingSchool.Controllers
 
         }
 
+        /// <summary>
+        /// Method to retrieve all lessons from the database that match the instructor ID selected
+        /// </summary>
+        /// <returns>A JsonResult made up of the lessons that match a particular instructor ID</returns>
         public JsonResult GetLessonsByInstructorId()
         {
             var id = User.Identity.GetUserId();
@@ -58,6 +79,10 @@ namespace ACEDrivingSchool.Controllers
 
         }
 
+        /// <summary>
+        /// Method to retrieve all lessons from the database that match the customer ID selected 
+        /// </summary>
+        /// <returns>A JsonResult made up of the lessons that match a particular customer ID</returns>
         public JsonResult GetLessonsByCustomerId()
         {
 
@@ -72,8 +97,13 @@ namespace ACEDrivingSchool.Controllers
 
         }
 
+        /// <summary>
+        /// Method to save a lesson to the database
+        /// </summary>
+        /// <param name="lesson">A model passed in by the form on the book a lesson view</param>
+        /// <returns>Returns a status to the book a lesson view</returns>
         [HttpPost]
-        public JsonResult SaveLesson(Lesson lesson)
+        public ActionResult SaveLesson(Lesson lesson)
         {
 
             var currentUserId = User.Identity.GetUserId();
@@ -97,7 +127,7 @@ namespace ACEDrivingSchool.Controllers
                 instructorId = customer.AssignedInstructor;
             }
 
-            var status = false;
+            
 
             if (lesson.Id > 0)
             {
@@ -110,7 +140,7 @@ namespace ACEDrivingSchool.Controllers
                     //v.InstructorId = instructorId;
                     //v.Paid = lesson.Paid;
                     v.DurationId = lesson.DurationId;
-                    status = true;
+                    
 
                 }
             }
@@ -121,15 +151,28 @@ namespace ACEDrivingSchool.Controllers
                 lesson.InstructorId = instructorId;
                 
                 _context.Lessons.Add(lesson);
-                status = true;
+                
             }
 
             _context.SaveChanges();
-            
+            var durations = _context.Durations.ToList();
+            var customers = _context.Customers.ToList();
 
-            return new JsonResult {Data = new {status = status}};
+            var model = new BookALessonViewModel
+            {
+                Lesson = new Lesson(),
+                Durations = durations,
+                Customers = customers
+            };
+
+            return View("BookALesson", model);
         }
 
+        /// <summary>
+        /// Method to delete a lesson from the database
+        /// </summary>
+        /// <param name="lessonId">Takes in a lessonId to delete from the database</param>
+        /// <returns>Returns a status to the book a lesson view</returns>
         [HttpPost]
         public JsonResult DeleteLesson(int lessonId)
         {

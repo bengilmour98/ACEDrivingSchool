@@ -372,6 +372,7 @@
     <Compile Include="Models\TransmissionType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\BookALessonViewModel.cs" />
     <Compile Include="ViewModels\EditDetailsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

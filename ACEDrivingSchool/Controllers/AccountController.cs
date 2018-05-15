@@ -62,8 +62,13 @@ namespace ACEDrivingSchool.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/CustomerLogin
+        
+        /// <summary>
+        /// A slightly edited general log in system that can be used by staff or customers. Once logged in, the user will be taken to the customer home page.
+        /// </summary>
+        /// <param name="model">takes the model from the submitted form</param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -93,7 +98,11 @@ namespace ACEDrivingSchool.Controllers
             }
         }
 
-        // GET: /Account/StaffLogin
+        /// <summary>
+        /// Method for loading the staffLogin page
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns>returns the staff login view</returns>
         [AllowAnonymous]
         public ActionResult StaffLogin(string returnUrl)
         {
@@ -101,7 +110,12 @@ namespace ACEDrivingSchool.Controllers
             return View();
         }
 
-        // POST: /Account/StaffLogin
+        /// <summary>
+        /// This is a custom log in method for signing staff members in. Once logged in, the user will be redirected to the staff home page.
+        /// </summary>
+        /// <param name="model">takes the model from the submitted form from the staff login</param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -505,6 +519,10 @@ namespace ACEDrivingSchool.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        /// <summary>
+        /// This method is called directly after a user account is removed. It is almost identical to the LogOff method.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LogOffAfterRemove()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
@@ -539,7 +557,10 @@ namespace ACEDrivingSchool.Controllers
             base.Dispose(disposing);
         }
 
-
+        /// <summary>
+        /// Method for removing a users account from the database
+        /// </summary>
+        /// <returns></returns>
         public ActionResult RemoveAccount()
         {
             var id = User.Identity.GetUserId();
@@ -558,6 +579,11 @@ namespace ACEDrivingSchool.Controllers
             return RedirectToAction("LogOffAfterRemove");
         }
 
+
+        /// <summary>
+        /// This calls the edit details method for customers
+        /// </summary>
+        /// <returns>Edit View, passing a model constructed from the database</returns>
         public ActionResult Edit()
         {
             var id = User.Identity.GetUserId();
@@ -586,6 +612,12 @@ namespace ACEDrivingSchool.Controllers
             return View("Edit", viewModel);
         }
 
+
+        /// <summary>
+        /// Method for saving the changes made when a customer edits their details
+        /// </summary>
+        /// <param name="model">takes in the model from the submitted form on the Edit Details page</param>
+        /// <returns>Customer home view once the details have been saved</returns>
         [HttpPost]
         public async Task<ActionResult> SaveChanges(EditDetailsViewModel model)
         {
