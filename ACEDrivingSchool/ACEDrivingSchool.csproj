@@ -374,6 +374,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BookALessonViewModel.cs" />
     <Compile Include="ViewModels\EditDetailsViewModel.cs" />
+    <Compile Include="ViewModels\PayLessonViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datetimepicker.css" />
@@ -721,6 +722,7 @@
     <Content Include="Views\Booking\BookALesson.cshtml" />
     <Content Include="Views\Booking\PayLesson.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Booking\ViewLessons.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

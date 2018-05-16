@@ -13,6 +13,8 @@ namespace ACEDrivingSchool.Models
 
         [Required]
         [Display(Name = "Date of lesson")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm A}", ApplyFormatInEditMode = true)]
         public DateTime? DateTimeOfLesson { get; set; }
 
         public Duration Duration { get; set; }

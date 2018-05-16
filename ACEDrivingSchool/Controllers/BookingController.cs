@@ -85,9 +85,6 @@ namespace ACEDrivingSchool.Controllers
         /// <returns>A JsonResult made up of the lessons that match a particular customer ID</returns>
         public JsonResult GetLessonsByCustomerId()
         {
-
-            
-
             var id = User.Identity.GetUserId();
 
             var lessons = _context.Lessons.Where(c => c.CustomerId == id);
@@ -103,9 +100,9 @@ namespace ACEDrivingSchool.Controllers
         /// <param name="lesson">A model passed in by the form on the book a lesson view</param>
         /// <returns>Returns a status to the book a lesson view</returns>
         [HttpPost]
-        public ActionResult SaveLesson(Lesson lesson)
+        public JsonResult SaveLesson(Lesson lesson)
         {
-
+            var status = false;
             var currentUserId = User.Identity.GetUserId();
             var customer = _context.Customers.Find(currentUserId);
             var instructorId = 0;
@@ -155,17 +152,10 @@ namespace ACEDrivingSchool.Controllers
             }
 
             _context.SaveChanges();
-            var durations = _context.Durations.ToList();
-            var customers = _context.Customers.ToList();
+            status = true;
 
-            var model = new BookALessonViewModel
-            {
-                Lesson = new Lesson(),
-                Durations = durations,
-                Customers = customers
-            };
+            return new JsonResult {Data = new {status = status}};
 
-            return View("BookALesson", model);
         }
 
         /// <summary>
@@ -188,6 +178,28 @@ namespace ACEDrivingSchool.Controllers
 
             return new JsonResult {Data = new {status = status}};
         }
+
+        public ActionResult ViewLessons()
+        {
+            return View();
+        }
+
+        public ActionResult PayLesson(int lessonId)
+        {
+            var lesson = _context.Lessons.SingleOrDefault(c => c.Id == lessonId);
+
+            if (lesson == null)
+                return HttpNotFound();
+
+            var viewModel = new PayLessonViewModel
+            {
+                Lesson = lesson
+            };
+
+            return View("PayLesson", viewModel);
+        }
+
+
 
 
         /*[HttpPost]
