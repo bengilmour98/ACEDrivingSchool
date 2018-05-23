@@ -21,5 +21,10 @@ namespace ACEDrivingSchool.Controllers
 
             return Redirect("/Account/StaffLogin");
         }
+
+        public ActionResult EditLessonPrices()
+        {
+            return View();
+        }
     }
 }

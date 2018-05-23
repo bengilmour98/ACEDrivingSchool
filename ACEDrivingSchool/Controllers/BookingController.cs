@@ -47,6 +47,23 @@ namespace ACEDrivingSchool.Controllers
             return View("BookALesson", model);
         }
 
+        public ActionResult StaffBookALesson()
+        {
+            var durations = _context.Durations.ToList();
+            var customers = _context.Customers.ToList();
+
+            var model = new BookALessonViewModel
+            {
+                Lesson = new Lesson(),
+                Durations = durations,
+                Customers = customers
+            };
+
+
+            return View("StaffBookALesson", model);
+            
+        }
+
         /// <summary>
         /// Method to retrieve all lessons from the database
         /// </summary>
@@ -199,7 +216,24 @@ namespace ACEDrivingSchool.Controllers
             return View("PayLesson", viewModel);
         }
 
+        /// <summary>
+        /// Method to retrieve all lessons from the database that match the instructor ID selected
+        /// </summary>
+        /// <returns>A JsonResult made up of the lessons that match a particular instructor ID</returns>
+        public JsonResult GetLessonsByInstructorIdForStaff(string id)
+        {
+            
 
+            var userInDb = _context.Customers.Find(id);
+
+            var instructorId = userInDb.AssignedInstructor;
+
+            var lessons = _context.Lessons.Where(c => c.InstructorId == instructorId).ToList();
+
+            return new JsonResult { Data = lessons, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+
+
+        }
 
 
         /*[HttpPost]
