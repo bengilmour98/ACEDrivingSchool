@@ -534,6 +534,7 @@
     <Content Include="Content\_bootstrap-datetimepicker.less" />
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\datejs.js" />
     <Content Include="Scripts\fullcalendar\fullcalendar.js" />
     <Content Include="Scripts\fullcalendar\fullcalendar.min.js" />
     <Content Include="Scripts\fullcalendar\gcal.js" />
@@ -723,6 +724,8 @@
     <Content Include="Views\Booking\PayLesson.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Booking\ViewLessons.cshtml" />
+    <Content Include="Views\Booking\StaffBookALesson.cshtml" />
+    <Content Include="Views\Staff\EditLessonPrices.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

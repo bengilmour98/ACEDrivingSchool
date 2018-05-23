@@ -56,13 +56,20 @@
                     url: '/booking/GetLessonsByCustomerId',
                     success: function(data) {
                         $.each(data,
-                            function(i, v) {
+                            function (i, v) {
+                                var durationString = "";
+                                if (v.DurationId == 1) {
+                                    durationString = "1 Hour";
+                                } else {
+                                    durationString = "2 Hours";
+                                }
+
                                 lessons.push({
                                     lessonId: v.Id,
                                     title: 'Lesson',
                                     description: moment(v.DateTimeOfLesson),
                                     start: moment(v.DateTimeOfLesson),
-                                    duration: v.DurationId = 1 ? '1 Hour' : '2 Hours',
+                                    duration: durationString,
                                     paid: v.Paid
                                 });
                             });
@@ -107,7 +114,9 @@
                 });
             }
 
-            $('#btnDelete').click(function() {
+            $('#btnDelete').click(function () {
+
+
                 if (selectedEvent != null && confirm('Are you sure you wish to delete this lesson?')) {
                     $.ajax({
                         type: "POST",
@@ -126,11 +135,7 @@
                 }
             });
 
-            $('#btnPay').click(function () {
-                
-
-                 
-            });
+            
 
         });
 </script>
