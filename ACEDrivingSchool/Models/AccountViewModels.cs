@@ -63,6 +63,7 @@ namespace ACEDrivingSchool.Models
         public bool RememberMe { get; set; }
     }
 
+    //Changes made to the register form to add in the extra fields necessary for this app.
     public class RegisterViewModel
     {
         [Required]
@@ -117,6 +118,8 @@ namespace ACEDrivingSchool.Models
 
 
         public int Credit { get; set; }
+
+        
 
     }
 

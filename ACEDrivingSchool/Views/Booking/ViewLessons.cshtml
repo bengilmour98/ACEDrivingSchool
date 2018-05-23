@@ -1,0 +1,137 @@
+﻿<head>
+    <link rel="stylesheet" href="~/Content/fullcalendar.css" />
+    <link rel="stylesheet" href="~/Content/fullcalendar.print.css" media="print" />
+
+
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/fullcalendar/fullcalendar.min.js"></script>
+</head>
+
+@{
+    ViewBag.Title = "ViewLessons";
+}
+
+<h2>Your Timetable</h2>
+
+<div id="calendar"></div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span id="eventTitle"></span></h4>
+            </div>
+
+            <div class="modal-body">
+                <button id="btnDelete" class="btn btn-default btn-sm pull-right">
+                    <span class="glyphicon glyphicon-remove"></span> Remove
+                </button>
+                <p id="pDetails"></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" id="btnPay" class="btn btn-primary" data-dismiss="modal">Pay for this lesson</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+
+            var lessons = [];
+            var selectedEvent = null;
+
+            fetchLessonsAndRenderCalendar();
+
+            function fetchLessonsAndRenderCalendar() {
+                var lessons = [];
+                $.ajax({
+                    type: "GET",
+                    url: '/booking/GetLessonsByCustomerId',
+                    success: function(data) {
+                        $.each(data,
+                            function(i, v) {
+                                lessons.push({
+                                    lessonId: v.Id,
+                                    title: 'Lesson',
+                                    description: moment(v.DateTimeOfLesson),
+                                    start: moment(v.DateTimeOfLesson),
+                                    duration: v.DurationId = 1 ? '1 Hour' : '2 Hours',
+                                    paid: v.Paid
+                                });
+                            });
+
+                        generateCalendar(lessons);
+                    },
+                    error: function(error) {
+                        alert('Failed');
+                    }
+                });
+            }
+
+            function generateCalendar(lessons) {
+
+                $('#calendar').fullCalendar('destroy');
+
+                $('#calendar').fullCalendar({
+                    contentHeight: 400,
+                    defaultDate: new Date(),
+                    timeFormat: 'h(:mm)a',
+                    header: {
+                        left: 'prev, next today',
+                        center: 'title',
+                        right: 'month,basicWeek,basicDay,agenda'
+                    },
+                    eventLimit: true,
+                    eventColor: '#378006',
+                    events: lessons,
+                    eventClick: function(calEvent, jsEvent, view) {
+                        selectedEvent = calEvent;
+                        $('#myModal #eventTitle').text(calEvent.title);
+                        var $description = $('<div/>');
+                        $description.append($('<p/>')
+                            .html('<b>Date/Time: <b/>' + calEvent.start.format("DD MMM hh:mm a")));
+                        $description.append($('<p/>').html('<b>Duration: <b/>' + calEvent.duration));
+                        $description.append($('<p/>').html('<b>Paid: <b/>' + calEvent.paid));
+                        $('#myModal #pDetails').empty().html($description);
+
+                        $('#myModal').modal();
+                    }
+                    
+                });
+            }
+
+            $('#btnDelete').click(function() {
+                if (selectedEvent != null && confirm('Are you sure you wish to delete this lesson?')) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/booking/DeleteLesson",
+                        data: { 'lessonId': selectedEvent.lessonId },
+                        success: function(data) {
+                            if (data.status) {
+                                fetchLessonsAndRenderCalendar();
+                                $('#myModal').modal('hide');
+                            }
+                        },
+                        error: function() {
+                            alert('Failed');
+                        }
+                    });
+                }
+            });
+
+            $('#btnPay').click(function () {
+                
+
+                 
+            });
+
+        });
+</script>
+}

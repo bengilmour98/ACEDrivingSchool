@@ -23,12 +23,13 @@ textarea {
     max-width: 280px;
 }
 
-.input-validation-error ,
-label.error{
-    color: red
-}
+
 
 .input-validation-error,
-.input-error {
+input.error {
     border: 2px solid red
+}
+
+.delete {
+    color: black;
 }

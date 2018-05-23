@@ -18,6 +18,7 @@ namespace ACEDrivingSchool.Models
         public string DrivingLicenceNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
         public int Credit { get; set; }
+        public int AssignedInstructor { get; set; }
 
 
 

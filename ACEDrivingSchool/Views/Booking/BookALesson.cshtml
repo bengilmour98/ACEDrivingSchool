@@ -1,0 +1,304 @@
+﻿<head>
+    <link rel="stylesheet" href="~/Content/fullcalendar.css" />
+    <link rel="stylesheet" href="~/Content/fullcalendar.print.css" media="print"/>
+    
+    <script type="text/javascript" src="/scripts/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="/scripts/moment.min.js"></script>
+    <script type="text/javascript" src="/scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/scripts/bootstrap-datetimepicker.min.js"></script>
+
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/fullcalendar/fullcalendar.min.js"></script>
+</head>
+
+@using System.Data.Entity.Core.Common.EntitySql
+@using ACEDrivingSchool.Models
+@model ACEDrivingSchool.ViewModels.BookALessonViewModel
+@{
+    ViewBag.Title = "Book a lesson";
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>Your instructors Timetable</h3>
+
+
+
+<div id="calendar"></div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span id="eventTitle"></span></h4>
+            </div>
+
+            <div class="modal-body">
+                <p id="pDetails"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+    <div id="myModalSave" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Book a lesson</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <form class="form-horizontal">
+                        <input type="hidden" id="hdLessonId" value="0"/>
+                        <input type="hidden" id="hdLessonPaid" value="false"/>
+
+
+                        <div class="form-group">
+                            <label>Date/Time of Lesson</label>
+                            <div class="input-group date" id="datePicker">
+                                @Html.TextBoxFor(m => m.Lesson.DateTimeOfLesson, new {@class = "form-control", id="txtDate"})
+                                <script type="text/javascript">
+                                    
+
+                                    $(function () {
+                                        $('#txtDate').datetimepicker({
+                                            format: "DD/MM/YYYY HH:mm A",
+                                            stepping: 30,
+                                            minDate: new Date()
+
+                                    });
+                                    });
+                                </script>
+                            </div>
+                            
+                        </div>
+
+                        <div class="form-group">
+                            <label>Duration</label>
+                            @Html.DropDownListFor(m => m.Lesson.DurationId, new SelectList(Model.Durations, "Id", "DurationOfLesson"), "Select Duration", new {@class = "form-control", id = "ddDuration"})
+
+                        </div>
+
+                        
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" id="btnSave" class="btn btn-success" >Save</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+@section scripts
+{
+
+
+    <script>
+        $(document).ready(function() {
+
+
+            var lessons = [];
+            var selectedEvent = null;
+
+            fetchLessonsAndRenderCalendar();
+
+            function fetchLessonsAndRenderCalendar() {
+                console.log(lessons);
+                $.ajax({
+                    type: "GET",
+                    url: '/booking/GetLessonsByInstructorId',
+                    success: function(data) {
+                        $.each(data,
+                            function(i, v) {
+                                lessons.push({
+                                    lessonId: v.Id,
+                                    title: 'Lesson',
+                                    description: moment(v.DateTimeOfLesson),
+                                    start: moment(v.DateTimeOfLesson),
+                                    duration: v.DurationId = 1 ? '1 Hour' : '2 Hours',
+                                    paid: v.Paid
+                                });
+                            });
+
+                        generateCalendar(lessons);
+                    },
+                    error: function(error) {
+                        alert('Loading failed');
+                    }
+                });
+            }
+
+            function generateCalendar(lessons) {
+
+                $('#calendar').fullCalendar('destroy');
+
+                $('#calendar').fullCalendar({
+                    contentHeight: 400,
+                    defaultDate: new Date(),
+                    timeFormat: 'h(:mm)a',
+                    header: {
+                        left: 'prev, next today',
+                        center: 'title',
+                        right: 'month,basicWeek,basicDay,agenda'
+                    },
+                    eventLimit: true,
+                    eventColor: '#378006',
+                    events: lessons,
+                    eventClick: function(calEvent, jsEvent, view) {
+                        selectedEvent = calEvent;
+                        $('#myModal #eventTitle').text(calEvent.title);
+                        var $description = $('<div/>');
+                        $description.append($('<p/>')
+                            .html('<b>Date/Time: <b/>' + calEvent.start.format("DD MMM hh:mm a")));
+                        $description.append($('<p/>').html('<b>Duration: <b/>' + calEvent.duration));
+                        $description.append($('<p/>').html('<b>Paid: <b/>' + calEvent.paid));
+                        $('#myModal #pDetails').empty().html($description);
+
+                        $('#myModal').modal();
+                    },
+                    selectable: true,
+                    select: function(start, end) {
+                        selectedEvent = {
+                            lessonId: 0,
+                            title: '',
+                            description: '',
+                            start: start,
+                            duration: '',
+                            paid: false
+                        }
+                        addBooking();
+                        $('#calendar').fullCalendar('unselect');
+                    }
+                });
+            }
+
+            $('#btnDelete').click(function() {
+                if (selectedEvent != null && confirm('Are you sure you wish to delete this lesson?')) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/booking/DeleteLesson",
+                        data: { 'lessonId': selectedEvent.lessonId },
+                        success: function(data) {
+                            if (data.status) {
+                                fetchLessonsAndRenderCalendar();
+                                $('#myModal').modal('hide');
+                            }
+                        },
+                        error: function() {
+                            alert('Failed');
+                        }
+                    });
+                }
+            });
+
+
+            function addBooking() {
+
+                $('#myModalSave').modal();
+            }
+
+
+            $('#btnSave').click(function () {
+                var timeAvailable = true;
+
+                
+
+
+                alert('Save click works');
+                
+
+                if ($('#txtDate').val().trim() == "") {
+                    alert('Date/Time required');
+                    return;
+                }
+
+                if ($('#ddDuration').val().trim() == "") {
+                    alert('Duration Required');
+                    return;
+                }
+
+                
+                lessons.forEach(function (element) {
+
+                    var currentDate = $('#txtDate').val();
+                    var startDate = moment(element.start).format("DD/MM/YYYY HH:mm A");
+
+                    var addedHours = element.duration = "1 Hour" ? 1 : 2;
+
+                    var endDate = moment(element.start);
+                    endDate.add(addedHours, "hours");
+                    endDate = endDate.format("DD/MM/YYYY HH:mm A");
+
+                    if (currentDate >= startDate || currentDate < endDate) {
+                        
+                        timeAvailable = false;
+
+                    }
+                    
+
+                });
+
+                console.log(timeAvailable);
+
+                if (timeAvailable == true) {
+                    var data = {
+                        Id: $('#hdLessonId').val(),
+                        DateTimeOfLesson: $('#txtDate').val(),
+                        DurationId: $('#ddDuration').val(),
+                        BookingDate: null,
+                        CustomerId: null,
+                        InstructorId: null,
+                        Paid: false
+                    }
+                    alert('Save function will be called');
+                    saveLesson(data);
+                } else {
+                    alert('This time is unavailable, please select another');
+                }
+                
+            
+        });
+
+        function saveLesson(data) {
+            $.ajax({
+                type: "POST",
+                url: "/booking/SaveLesson",
+                data: data,
+                success: function(data) {
+                    if (data.status) {
+                        fetchLessonsAndRenderCalendar();
+                        $('#myModalSave').modal('hide');
+                    }
+                    alert('Success');
+                    $('#txtDate').val('');
+                    $('#ddDuration').val('');
+                },
+                error: function() {
+                    alert('Saving failed');
+                }
+            });
+        }
+
+        
+
+    });
+    </script>
+
+}
+
+

@@ -80,12 +80,24 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -195,7 +207,10 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\API\BookingController.cs" />
+    <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -211,44 +226,462 @@
     <Compile Include="Migrations\201804161343476_AddUserDetailsToAspnetUsers.Designer.cs">
       <DependentUpon>201804161343476_AddUserDetailsToAspnetUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804191841470_AddingLessons.cs" />
+    <Compile Include="Migrations\201804191841470_AddingLessons.Designer.cs">
+      <DependentUpon>201804191841470_AddingLessons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804191843115_SeedLessonTypes.cs" />
+    <Compile Include="Migrations\201804191843115_SeedLessonTypes.Designer.cs">
+      <DependentUpon>201804191843115_SeedLessonTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804191845510_SeedDurations.cs" />
+    <Compile Include="Migrations\201804191845510_SeedDurations.Designer.cs">
+      <DependentUpon>201804191845510_SeedDurations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804191922339_SeedTransmissionTypes.cs" />
+    <Compile Include="Migrations\201804191922339_SeedTransmissionTypes.Designer.cs">
+      <DependentUpon>201804191922339_SeedTransmissionTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804191927453_FixingByteIssuesForLesson.cs" />
+    <Compile Include="Migrations\201804191927453_FixingByteIssuesForLesson.Designer.cs">
+      <DependentUpon>201804191927453_FixingByteIssuesForLesson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804192016042_UpdateLessonDateTime.cs" />
+    <Compile Include="Migrations\201804192016042_UpdateLessonDateTime.Designer.cs">
+      <DependentUpon>201804192016042_UpdateLessonDateTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804241040528_LessonChanges.cs" />
+    <Compile Include="Migrations\201804241040528_LessonChanges.Designer.cs">
+      <DependentUpon>201804241040528_LessonChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804241052095_RemoveTimeCreateDateTime.cs" />
+    <Compile Include="Migrations\201804241052095_RemoveTimeCreateDateTime.Designer.cs">
+      <DependentUpon>201804241052095_RemoveTimeCreateDateTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804241357092_FixLesson.cs" />
+    <Compile Include="Migrations\201804241357092_FixLesson.Designer.cs">
+      <DependentUpon>201804241357092_FixLesson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804241358508_DateTimeOfLessonNotNullable.cs" />
+    <Compile Include="Migrations\201804241358508_DateTimeOfLessonNotNullable.Designer.cs">
+      <DependentUpon>201804241358508_DateTimeOfLessonNotNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804241535088_ChangeLessonIdToInt.cs" />
+    <Compile Include="Migrations\201804241535088_ChangeLessonIdToInt.Designer.cs">
+      <DependentUpon>201804241535088_ChangeLessonIdToInt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804250827335_RebuildLesson.cs" />
+    <Compile Include="Migrations\201804250827335_RebuildLesson.Designer.cs">
+      <DependentUpon>201804250827335_RebuildLesson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804250828175_AddLessonWithIdFix.cs" />
+    <Compile Include="Migrations\201804250828175_AddLessonWithIdFix.Designer.cs">
+      <DependentUpon>201804250828175_AddLessonWithIdFix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804251310197_EditIdS.cs" />
+    <Compile Include="Migrations\201804251310197_EditIdS.Designer.cs">
+      <DependentUpon>201804251310197_EditIdS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804251316477_AddInstructor.cs" />
+    <Compile Include="Migrations\201804251316477_AddInstructor.Designer.cs">
+      <DependentUpon>201804251316477_AddInstructor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804251320491_RemoveInstructorFromLesson.cs" />
+    <Compile Include="Migrations\201804251320491_RemoveInstructorFromLesson.Designer.cs">
+      <DependentUpon>201804251320491_RemoveInstructorFromLesson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804251322061_RemoveInstructorInheritanceFromStaff.cs" />
+    <Compile Include="Migrations\201804251322061_RemoveInstructorInheritanceFromStaff.Designer.cs">
+      <DependentUpon>201804251322061_RemoveInstructorInheritanceFromStaff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804251337588_AddInstructorToCustomer.cs" />
+    <Compile Include="Migrations\201804251337588_AddInstructorToCustomer.Designer.cs">
+      <DependentUpon>201804251337588_AddInstructorToCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804251407313_AddTransmissionToInstructor.cs" />
+    <Compile Include="Migrations\201804251407313_AddTransmissionToInstructor.Designer.cs">
+      <DependentUpon>201804251407313_AddTransmissionToInstructor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804251434261_ChangeBookingsIdsToInt.cs" />
+    <Compile Include="Migrations\201804251434261_ChangeBookingsIdsToInt.Designer.cs">
+      <DependentUpon>201804251434261_ChangeBookingsIdsToInt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804261408260_EditLessonBookingRelationship.cs" />
+    <Compile Include="Migrations\201804261408260_EditLessonBookingRelationship.Designer.cs">
+      <DependentUpon>201804261408260_EditLessonBookingRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805011218511_AddPriceToDuration.cs" />
+    <Compile Include="Migrations\201805011218511_AddPriceToDuration.Designer.cs">
+      <DependentUpon>201805011218511_AddPriceToDuration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805011539538_RestructureBookingAndLessonTables.cs" />
+    <Compile Include="Migrations\201805011539538_RestructureBookingAndLessonTables.Designer.cs">
+      <DependentUpon>201805011539538_RestructureBookingAndLessonTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805031133251_RemoveTransmission.cs" />
+    <Compile Include="Migrations\201805031133251_RemoveTransmission.Designer.cs">
+      <DependentUpon>201805031133251_RemoveTransmission.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805031135215_RemoveLessonType.cs" />
+    <Compile Include="Migrations\201805031135215_RemoveLessonType.Designer.cs">
+      <DependentUpon>201805031135215_RemoveLessonType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805041238399_AddLinkBetweenBookingAndLesson.cs" />
+    <Compile Include="Migrations\201805041238399_AddLinkBetweenBookingAndLesson.Designer.cs">
+      <DependentUpon>201805041238399_AddLinkBetweenBookingAndLesson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805041253451_AddInstructorIdToLesson.cs" />
+    <Compile Include="Migrations\201805041253451_AddInstructorIdToLesson.Designer.cs">
+      <DependentUpon>201805041253451_AddInstructorIdToLesson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805110957452_RemoveBookingTable.cs" />
+    <Compile Include="Migrations\201805110957452_RemoveBookingTable.Designer.cs">
+      <DependentUpon>201805110957452_RemoveBookingTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805111013308_RemoveDurations.cs" />
+    <Compile Include="Migrations\201805111013308_RemoveDurations.Designer.cs">
+      <DependentUpon>201805111013308_RemoveDurations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805111018405_ChangeDurationInLesson.cs" />
+    <Compile Include="Migrations\201805111018405_ChangeDurationInLesson.Designer.cs">
+      <DependentUpon>201805111018405_ChangeDurationInLesson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805111312495_UpdateLessonWithLinkToCustomer.cs" />
+    <Compile Include="Migrations\201805111312495_UpdateLessonWithLinkToCustomer.Designer.cs">
+      <DependentUpon>201805111312495_UpdateLessonWithLinkToCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805131731244_AddDurationsTable.cs" />
+    <Compile Include="Migrations\201805131731244_AddDurationsTable.Designer.cs">
+      <DependentUpon>201805131731244_AddDurationsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805131732519_AddDurationToLesson.cs" />
+    <Compile Include="Migrations\201805131732519_AddDurationToLesson.Designer.cs">
+      <DependentUpon>201805131732519_AddDurationToLesson.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Duration.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Instructor.cs" />
     <Compile Include="Models\Lesson.cs" />
+    <Compile Include="Models\LessonType.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\RoleNameConstants.cs" />
     <Compile Include="Models\Staff.cs" />
+    <Compile Include="Models\TransmissionType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\BookALessonViewModel.cs" />
+    <Compile Include="ViewModels\EditDetailsViewModel.cs" />
+    <Compile Include="ViewModels\PayLessonViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-lumen.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\fullcalendar.css" />
+    <Content Include="Content\fullcalendar.min.css" />
+    <Content Include="Content\fullcalendar.print.css" />
+    <Content Include="Content\fullcalendar.print.min.css" />
+    <Content Include="Content\jquery-ui-timepicker-addon.css" />
+    <Content Include="Content\jquery-ui-timepicker-addon.min.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Scripts\bootbox.js" />
+    <Content Include="Scripts\bootbox.min.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap\wells.less" />
+    <Content Include="Content\bootstrap\variables.less" />
+    <Content Include="Content\bootstrap\utilities.less" />
+    <Content Include="Content\bootstrap\type.less" />
+    <Content Include="Content\bootstrap\tooltip.less" />
+    <Content Include="Content\bootstrap\thumbnails.less" />
+    <Content Include="Content\bootstrap\theme.less" />
+    <Content Include="Content\bootstrap\tables.less" />
+    <Content Include="Content\bootstrap\scaffolding.less" />
+    <Content Include="Content\bootstrap\responsive-utilities.less" />
+    <Content Include="Content\bootstrap\responsive-embed.less" />
+    <Content Include="Content\bootstrap\progress-bars.less" />
+    <Content Include="Content\bootstrap\print.less" />
+    <Content Include="Content\bootstrap\popovers.less" />
+    <Content Include="Content\bootstrap\panels.less" />
+    <Content Include="Content\bootstrap\pagination.less" />
+    <Content Include="Content\bootstrap\pager.less" />
+    <Content Include="Content\bootstrap\normalize.less" />
+    <Content Include="Content\bootstrap\navs.less" />
+    <Content Include="Content\bootstrap\navbar.less" />
+    <Content Include="Content\bootstrap\modals.less" />
+    <Content Include="Content\bootstrap\mixins\vendor-prefixes.less" />
+    <Content Include="Content\bootstrap\mixins\text-overflow.less" />
+    <Content Include="Content\bootstrap\mixins\text-emphasis.less" />
+    <Content Include="Content\bootstrap\mixins\table-row.less" />
+    <Content Include="Content\bootstrap\mixins\tab-focus.less" />
+    <Content Include="Content\bootstrap\mixins\size.less" />
+    <Content Include="Content\bootstrap\mixins\responsive-visibility.less" />
+    <Content Include="Content\bootstrap\mixins\resize.less" />
+    <Content Include="Content\bootstrap\mixins\reset-text.less" />
+    <Content Include="Content\bootstrap\mixins\reset-filter.less" />
+    <Content Include="Content\bootstrap\mixins\progress-bar.less" />
+    <Content Include="Content\bootstrap\mixins\panels.less" />
+    <Content Include="Content\bootstrap\mixins\pagination.less" />
+    <Content Include="Content\bootstrap\mixins\opacity.less" />
+    <Content Include="Content\bootstrap\mixins\nav-vertical-align.less" />
+    <Content Include="Content\bootstrap\mixins\nav-divider.less" />
+    <Content Include="Content\bootstrap\mixins\list-group.less" />
+    <Content Include="Content\bootstrap\mixins\labels.less" />
+    <Content Include="Content\bootstrap\mixins\image.less" />
+    <Content Include="Content\bootstrap\mixins\hide-text.less" />
+    <Content Include="Content\bootstrap\mixins\grid.less" />
+    <Content Include="Content\bootstrap\mixins\grid-framework.less" />
+    <Content Include="Content\bootstrap\mixins\gradients.less" />
+    <Content Include="Content\bootstrap\mixins\forms.less" />
+    <Content Include="Content\bootstrap\mixins\clearfix.less" />
+    <Content Include="Content\bootstrap\mixins\center-block.less" />
+    <Content Include="Content\bootstrap\mixins\buttons.less" />
+    <Content Include="Content\bootstrap\mixins\border-radius.less" />
+    <Content Include="Content\bootstrap\mixins\background-variant.less" />
+    <Content Include="Content\bootstrap\mixins\alerts.less" />
+    <Content Include="Content\bootstrap\mixins.less" />
+    <Content Include="Content\bootstrap\media.less" />
+    <Content Include="Content\bootstrap\list-group.less" />
+    <Content Include="Content\bootstrap\labels.less" />
+    <Content Include="Content\bootstrap\jumbotron.less" />
+    <Content Include="Content\bootstrap\input-groups.less" />
+    <Content Include="Content\bootstrap\grid.less" />
+    <Content Include="Content\bootstrap\glyphicons.less" />
+    <Content Include="Content\bootstrap\forms.less" />
+    <Content Include="Content\bootstrap\dropdowns.less" />
+    <Content Include="Content\bootstrap\component-animations.less" />
+    <Content Include="Content\bootstrap\code.less" />
+    <Content Include="Content\bootstrap\close.less" />
+    <Content Include="Content\bootstrap\carousel.less" />
+    <Content Include="Content\bootstrap\buttons.less" />
+    <Content Include="Content\bootstrap\button-groups.less" />
+    <Content Include="Content\bootstrap\breadcrumbs.less" />
+    <Content Include="Content\bootstrap\bootstrap.less" />
+    <Content Include="Content\bootstrap\badges.less" />
+    <Content Include="Content\bootstrap\alerts.less" />
+    <Content Include="Content\_bootstrap-datetimepicker.less" />
+    <Content Include="Content\bootstrap-datetimepicker-build.less" />
+    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\fullcalendar\fullcalendar.js" />
+    <Content Include="Scripts\fullcalendar\fullcalendar.min.js" />
+    <Content Include="Scripts\fullcalendar\gcal.js" />
+    <Content Include="Scripts\fullcalendar\gcal.min.js" />
+    <Content Include="Scripts\fullcalendar\locale-all.js" />
+    <Content Include="Scripts\fullcalendar\locale\af.js" />
+    <Content Include="Scripts\fullcalendar\locale\ar-dz.js" />
+    <Content Include="Scripts\fullcalendar\locale\ar-kw.js" />
+    <Content Include="Scripts\fullcalendar\locale\ar-ly.js" />
+    <Content Include="Scripts\fullcalendar\locale\ar-ma.js" />
+    <Content Include="Scripts\fullcalendar\locale\ar-sa.js" />
+    <Content Include="Scripts\fullcalendar\locale\ar-tn.js" />
+    <Content Include="Scripts\fullcalendar\locale\ar.js" />
+    <Content Include="Scripts\fullcalendar\locale\bg.js" />
+    <Content Include="Scripts\fullcalendar\locale\bs.js" />
+    <Content Include="Scripts\fullcalendar\locale\ca.js" />
+    <Content Include="Scripts\fullcalendar\locale\cs.js" />
+    <Content Include="Scripts\fullcalendar\locale\da.js" />
+    <Content Include="Scripts\fullcalendar\locale\de-at.js" />
+    <Content Include="Scripts\fullcalendar\locale\de-ch.js" />
+    <Content Include="Scripts\fullcalendar\locale\de.js" />
+    <Content Include="Scripts\fullcalendar\locale\el.js" />
+    <Content Include="Scripts\fullcalendar\locale\en-au.js" />
+    <Content Include="Scripts\fullcalendar\locale\en-ca.js" />
+    <Content Include="Scripts\fullcalendar\locale\en-gb.js" />
+    <Content Include="Scripts\fullcalendar\locale\en-ie.js" />
+    <Content Include="Scripts\fullcalendar\locale\en-nz.js" />
+    <Content Include="Scripts\fullcalendar\locale\es-do.js" />
+    <Content Include="Scripts\fullcalendar\locale\es-us.js" />
+    <Content Include="Scripts\fullcalendar\locale\es.js" />
+    <Content Include="Scripts\fullcalendar\locale\et.js" />
+    <Content Include="Scripts\fullcalendar\locale\eu.js" />
+    <Content Include="Scripts\fullcalendar\locale\fa.js" />
+    <Content Include="Scripts\fullcalendar\locale\fi.js" />
+    <Content Include="Scripts\fullcalendar\locale\fr-ca.js" />
+    <Content Include="Scripts\fullcalendar\locale\fr-ch.js" />
+    <Content Include="Scripts\fullcalendar\locale\fr.js" />
+    <Content Include="Scripts\fullcalendar\locale\gl.js" />
+    <Content Include="Scripts\fullcalendar\locale\he.js" />
+    <Content Include="Scripts\fullcalendar\locale\hi.js" />
+    <Content Include="Scripts\fullcalendar\locale\hr.js" />
+    <Content Include="Scripts\fullcalendar\locale\hu.js" />
+    <Content Include="Scripts\fullcalendar\locale\id.js" />
+    <Content Include="Scripts\fullcalendar\locale\is.js" />
+    <Content Include="Scripts\fullcalendar\locale\it.js" />
+    <Content Include="Scripts\fullcalendar\locale\ja.js" />
+    <Content Include="Scripts\fullcalendar\locale\ka.js" />
+    <Content Include="Scripts\fullcalendar\locale\kk.js" />
+    <Content Include="Scripts\fullcalendar\locale\ko.js" />
+    <Content Include="Scripts\fullcalendar\locale\lb.js" />
+    <Content Include="Scripts\fullcalendar\locale\lt.js" />
+    <Content Include="Scripts\fullcalendar\locale\lv.js" />
+    <Content Include="Scripts\fullcalendar\locale\mk.js" />
+    <Content Include="Scripts\fullcalendar\locale\ms-my.js" />
+    <Content Include="Scripts\fullcalendar\locale\ms.js" />
+    <Content Include="Scripts\fullcalendar\locale\nb.js" />
+    <Content Include="Scripts\fullcalendar\locale\nl-be.js" />
+    <Content Include="Scripts\fullcalendar\locale\nl.js" />
+    <Content Include="Scripts\fullcalendar\locale\nn.js" />
+    <Content Include="Scripts\fullcalendar\locale\pl.js" />
+    <Content Include="Scripts\fullcalendar\locale\pt-br.js" />
+    <Content Include="Scripts\fullcalendar\locale\pt.js" />
+    <Content Include="Scripts\fullcalendar\locale\ro.js" />
+    <Content Include="Scripts\fullcalendar\locale\ru.js" />
+    <Content Include="Scripts\fullcalendar\locale\sk.js" />
+    <Content Include="Scripts\fullcalendar\locale\sl.js" />
+    <Content Include="Scripts\fullcalendar\locale\sq.js" />
+    <Content Include="Scripts\fullcalendar\locale\sr-cyrl.js" />
+    <Content Include="Scripts\fullcalendar\locale\sr.js" />
+    <Content Include="Scripts\fullcalendar\locale\sv.js" />
+    <Content Include="Scripts\fullcalendar\locale\th.js" />
+    <Content Include="Scripts\fullcalendar\locale\tr.js" />
+    <Content Include="Scripts\fullcalendar\locale\uk.js" />
+    <Content Include="Scripts\fullcalendar\locale\vi.js" />
+    <Content Include="Scripts\fullcalendar\locale\zh-cn.js" />
+    <Content Include="Scripts\fullcalendar\locale\zh-tw.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-addon-i18n.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-addon-i18n.min.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-af.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-am.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-bg.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-ca.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-cs.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-da.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-de.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-el.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-es.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-et.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-eu.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-fa.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-fi.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-fr.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-gl.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-he.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-hr.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-hu.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-id.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-it.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-ja.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-ko.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-lt.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-lv.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-mk.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-nl.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-no.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-pl.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-pt-BR.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-pt.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-ro.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-ru.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-sk.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-sl.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-sq.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-sr-RS.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-sr-YU.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-sv.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-th.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-tr.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-uk.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-vi.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-zh-CN.js" />
+    <Content Include="Scripts\i18n\jquery-ui-timepicker-zh-TW.js" />
+    <Content Include="Scripts\jquery-3.1.1.js" />
+    <Content Include="Scripts\jquery-3.1.1.min.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.1.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery-ui-sliderAccess.js" />
+    <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
+    <Content Include="Scripts\jquery-ui-timepicker-addon.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -286,17 +719,17 @@
     <Content Include="Views\Staff\StaffHome.cshtml" />
     <Content Include="Views\Customer\CustomerHome.cshtml" />
     <Content Include="Views\Account\StaffLogin.cshtml" />
+    <Content Include="Views\Booking\BookALesson.cshtml" />
+    <Content Include="Views\Booking\PayLesson.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Booking\ViewLessons.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201804131417319_InitialMigration.resx">
@@ -304,6 +737,105 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804161343476_AddUserDetailsToAspnetUsers.resx">
       <DependentUpon>201804161343476_AddUserDetailsToAspnetUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804191841470_AddingLessons.resx">
+      <DependentUpon>201804191841470_AddingLessons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804191843115_SeedLessonTypes.resx">
+      <DependentUpon>201804191843115_SeedLessonTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804191845510_SeedDurations.resx">
+      <DependentUpon>201804191845510_SeedDurations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804191922339_SeedTransmissionTypes.resx">
+      <DependentUpon>201804191922339_SeedTransmissionTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804191927453_FixingByteIssuesForLesson.resx">
+      <DependentUpon>201804191927453_FixingByteIssuesForLesson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804192016042_UpdateLessonDateTime.resx">
+      <DependentUpon>201804192016042_UpdateLessonDateTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804241040528_LessonChanges.resx">
+      <DependentUpon>201804241040528_LessonChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804241052095_RemoveTimeCreateDateTime.resx">
+      <DependentUpon>201804241052095_RemoveTimeCreateDateTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804241357092_FixLesson.resx">
+      <DependentUpon>201804241357092_FixLesson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804241358508_DateTimeOfLessonNotNullable.resx">
+      <DependentUpon>201804241358508_DateTimeOfLessonNotNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804241535088_ChangeLessonIdToInt.resx">
+      <DependentUpon>201804241535088_ChangeLessonIdToInt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804250827335_RebuildLesson.resx">
+      <DependentUpon>201804250827335_RebuildLesson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804250828175_AddLessonWithIdFix.resx">
+      <DependentUpon>201804250828175_AddLessonWithIdFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804251310197_EditIdS.resx">
+      <DependentUpon>201804251310197_EditIdS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804251316477_AddInstructor.resx">
+      <DependentUpon>201804251316477_AddInstructor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804251320491_RemoveInstructorFromLesson.resx">
+      <DependentUpon>201804251320491_RemoveInstructorFromLesson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804251322061_RemoveInstructorInheritanceFromStaff.resx">
+      <DependentUpon>201804251322061_RemoveInstructorInheritanceFromStaff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804251337588_AddInstructorToCustomer.resx">
+      <DependentUpon>201804251337588_AddInstructorToCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804251407313_AddTransmissionToInstructor.resx">
+      <DependentUpon>201804251407313_AddTransmissionToInstructor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804251434261_ChangeBookingsIdsToInt.resx">
+      <DependentUpon>201804251434261_ChangeBookingsIdsToInt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804261408260_EditLessonBookingRelationship.resx">
+      <DependentUpon>201804261408260_EditLessonBookingRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805011218511_AddPriceToDuration.resx">
+      <DependentUpon>201805011218511_AddPriceToDuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805011539538_RestructureBookingAndLessonTables.resx">
+      <DependentUpon>201805011539538_RestructureBookingAndLessonTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805031133251_RemoveTransmission.resx">
+      <DependentUpon>201805031133251_RemoveTransmission.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805031135215_RemoveLessonType.resx">
+      <DependentUpon>201805031135215_RemoveLessonType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805041238399_AddLinkBetweenBookingAndLesson.resx">
+      <DependentUpon>201805041238399_AddLinkBetweenBookingAndLesson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805041253451_AddInstructorIdToLesson.resx">
+      <DependentUpon>201805041253451_AddInstructorIdToLesson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805110957452_RemoveBookingTable.resx">
+      <DependentUpon>201805110957452_RemoveBookingTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805111013308_RemoveDurations.resx">
+      <DependentUpon>201805111013308_RemoveDurations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805111018405_ChangeDurationInLesson.resx">
+      <DependentUpon>201805111018405_ChangeDurationInLesson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805111312495_UpdateLessonWithLinkToCustomer.resx">
+      <DependentUpon>201805111312495_UpdateLessonWithLinkToCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805131731244_AddDurationsTable.resx">
+      <DependentUpon>201805131731244_AddDurationsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805131732519_AddDurationToLesson.resx">
+      <DependentUpon>201805131732519_AddDurationToLesson.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
