@@ -64,7 +64,7 @@ namespace ACEDrivingSchool.Controllers
 
         
         /// <summary>
-        /// A slightly edited general log in system that can be used by staff or customers. Once logged in, the user will be taken to the customer home page.
+        /// A slightly edited customer log in system. Once logged in, the user will be taken to the customer home page.
         /// </summary>
         /// <param name="model">takes the model from the submitted form</param>
         /// <param name="returnUrl"></param>
@@ -198,7 +198,7 @@ namespace ACEDrivingSchool.Controllers
             return View();
         }
 
-
+        //A method to get the instructor ID that has the least amount of assigned students. This is to check that the instructor with the least students is assigned any new student that registers
         public int GetRandomInstructorId()
         {
             int lowestStudentInstructorId = 0;
@@ -584,6 +584,7 @@ namespace ACEDrivingSchool.Controllers
         /// This calls the edit details method for customers
         /// </summary>
         /// <returns>Edit View, passing a model constructed from the database</returns>
+        
         public ActionResult Edit()
         {
             var id = User.Identity.GetUserId();
@@ -630,7 +631,7 @@ namespace ACEDrivingSchool.Controllers
             var manager = new UserManager<Customer>(store);
             var currentUser = manager.FindByEmail(model.Email);
 
-            
+            //sets all the variables to their counterpart from the model that has been passed in
             currentUser.FirstName = model.FirstName;
             currentUser.SecondName = model.SecondName;
             currentUser.AddressLine1 = model.AddressLine1;

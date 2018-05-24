@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ACEDrivingSchool.Models;
 using ACEDrivingSchool.ViewModels;
 using System.Data.Entity;
+using System.Net;
 using Microsoft.AspNet.Identity;
+using Stripe;
 
 namespace ACEDrivingSchool.Controllers
 {
@@ -26,11 +29,12 @@ namespace ACEDrivingSchool.Controllers
             _context.Dispose();
         }
 
-
+        
         /// <summary>
         /// Method to load the page for booking a lesson
         /// </summary>
         /// <returns>BookALesson view</returns>
+        [Authorize(Roles = RoleNameConstants.IsCustomer)]
         public ActionResult BookALesson()
         {
             var durations = _context.Durations.ToList();
@@ -47,6 +51,12 @@ namespace ACEDrivingSchool.Controllers
             return View("BookALesson", model);
         }
 
+        
+        /// <summary>
+        /// Method to load the staff page for booking a lesson
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = RoleNameConstants.IsStaff + "," + RoleNameConstants.Admin)]
         public ActionResult StaffBookALesson()
         {
             var durations = _context.Durations.ToList();
@@ -63,6 +73,7 @@ namespace ACEDrivingSchool.Controllers
             return View("StaffBookALesson", model);
             
         }
+
 
         /// <summary>
         /// Method to retrieve all lessons from the database
@@ -196,22 +207,39 @@ namespace ACEDrivingSchool.Controllers
             return new JsonResult {Data = new {status = status}};
         }
 
+        /// <summary>
+        /// Method to load the view lessons page
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = RoleNameConstants.IsCustomer)]
         public ActionResult ViewLessons()
         {
             return View();
         }
 
-        public ActionResult PayLesson(int lessonId)
+        /// <summary>
+        /// Method to navigate to the pay lesson page
+        /// </summary>
+        /// <param name="id">Passes the lessonId that the customer has selected to pay</param>
+        /// <returns></returns>
+        [Authorize(Roles = RoleNameConstants.IsCustomer)]
+        public ActionResult PayLesson(int id)
         {
-            var lesson = _context.Lessons.SingleOrDefault(c => c.Id == lessonId);
+            var lesson = _context.Lessons.Include(c => c.Duration).SingleOrDefault(c => c.Id == id);
 
             if (lesson == null)
                 return HttpNotFound();
 
             var viewModel = new PayLessonViewModel
             {
-                Lesson = lesson
+                Lesson = lesson,
+
             };
+
+            var stripePublishKey = ConfigurationManager.AppSettings["stripePublishableKey"];
+            ViewBag.StripePublishKey = stripePublishKey;
+
+            TempData["LessonPrice"] = lesson.Duration.Price*100;
 
             return View("PayLesson", viewModel);
         }
@@ -236,48 +264,28 @@ namespace ACEDrivingSchool.Controllers
         }
 
 
-        /*[HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddLesson(Lesson lesson)
+        public ActionResult Charge(string stripeEmail, string stripeToken)
         {
-            var viewModel = new BookALessonViewModel();
-
-            if (!ModelState.IsValid)
-            {
-                viewModel = new BookALessonViewModel
-                {
-                    Lesson = lesson,
-
-                    Durations = _context.Durations.ToList(),
-                    //LessonTypes = _context.LessonTypes.ToList(),
-                    //TransmissionTypes = _context.TransmissionTypes.ToList()
-                };
-
-                return View("BookALesson", viewModel);
-            }
+            var customers = new StripeCustomerService();
+            var charges = new StripeChargeService();
 
             
-            if (lesson.Id == 0)
+
+            var customer = customers.Create(new StripeCustomerCreateOptions
             {
-                
+                Email = stripeEmail,
+                SourceToken = stripeToken
+            });
 
-
-                _context.Lessons.Add(lesson);
-                _context.SaveChanges();
-            }
-
-
-            viewModel = new BookALessonViewModel
+            var charge = charges.Create(new StripeChargeCreateOptions
             {
-                Lesson = lesson,
+                Amount = amount,
+                Description = "Lessons",
+                Currency = "gbp",
+                CustomerId = customer.Id
 
-                Durations = _context.Durations.ToList(),
-                //LessonTypes = _context.LessonTypes.ToList(),
-                //TransmissionTypes = _context.TransmissionTypes.ToList()
-            };
-
-            return View("BookALesson", viewModel);
-            
-        }*/
+            });
+            return View("LessonPaid");
+        }
     }
 }

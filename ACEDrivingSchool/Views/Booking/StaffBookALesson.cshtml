@@ -1,6 +1,9 @@
 ﻿<head>
     <link rel="stylesheet" href="~/Content/fullcalendar.css" />
     <link rel="stylesheet" href="~/Content/fullcalendar.print.css" media="print" />
+    
+    <link rel="stylesheet" href="~/Content/toastr.css"/>
+    <script type="text/javascript" src="/Scripts/toastr.js"></script>
 
     <script type="text/javascript" src="/scripts/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="/scripts/moment.min.js"></script>
@@ -119,7 +122,7 @@
 
 @section scripts
 {
-
+@Scripts.Render("~/bundles/jqueryval")
 
     <script>
         $(document).ready(function() {
@@ -166,7 +169,7 @@
                         generateCalendar(lessons);
                     },
                     error: function(error) {
-                        alert('Loading failed');
+                        toastr.error("Failed to load lessons");
                     }
                 });
             }
@@ -226,10 +229,11 @@
                             if (data.status) {
                                 fetchLessonsAndRenderCalendar();
                                 $('#myModal').modal('hide');
+                                toastr.success("Lesson was removed");
                             }
                         },
                         error: function() {
-                            alert('Failed');
+                            toastr.error("Lesson was not removed. An unknown error occured.");
                         }
                     });
                 }
@@ -258,16 +262,16 @@
             $('#btnSave').click(function () {
                 var timeAvailable = true;
 
-                alert('Save click works');
+                
 
 
                 if ($('#txtDate').val().trim() == "") {
-                    alert('Date/Time required');
+                    toastr.error("A date is required");
                     return;
                 }
 
                 if ($('#ddDuration').val().trim() == "") {
-                    alert('Duration Required');
+                    toastr.error("A duration is required");
                     return;
                 }
 
@@ -355,10 +359,10 @@
                         Paid: false
                         
                     }
-                    alert('Save function will be called');
+                    
                     saveLesson(data);
                 } else {
-                    alert('This time is unavailable, please select another');
+                    toastr.error("This time is not available, please select another");
                 }
 
 
@@ -376,12 +380,12 @@
                         $('#myModal').modal('hide');
 
                     }
-                    alert('Success');
+                    toastr.success("Lesson added");
                     $('#txtDate').val('');
                     $('#ddDuration').val('');
                 },
                 error: function() {
-                    alert('Saving failed');
+                    toastr.error("Lesson was not added. An unknown error occured.");
                 }
             });
 

@@ -1,9 +1,59 @@
-﻿@model ACEDrivingSchool.ViewModels.PayLessonViewModel
+﻿@using Microsoft.Ajax.Utilities
+@model ACEDrivingSchool.ViewModels.PayLessonViewModel
 @{
     ViewBag.Title = "PayLesson";
 }
 
 <h2>Pay Lesson</h2>
+
+
+
+<table id="lesson" class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>Lesson ID</th>
+        <th>Date/Time</th>
+        <th>Duration</th>
+        <th>Cost</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>@Model.Lesson.Id</td>
+        <td>@Model.Lesson.DateTimeOfLesson</td>
+        <td>@Model.Lesson.Duration.DurationOfLesson</td>
+        <td>£@Model.Lesson.Duration.Price</td>
+    </tr>
+    
+    </tbody>
+</table>
+
+
+<form id="orderForm" action="/booking/charge" method="POST">
+    <article>
+        <label id="stripeAmount"></label>
+        
+    </article>
+    
+
+    <script id="stripeScript" src="//checkout.stripe.com/v2/checkout.js"
+            class="stripe-button"
+            data-key="@ViewBag.stripePublishKey"
+            data-locale="auto"
+            data-currency="gbp"
+            data-description="Checkout"
+            data-amount="">
+
+    </script>
+</form>
+
+@section scripts
+{
+
+    <script>
+
+    </script>    
+}
 
 
 

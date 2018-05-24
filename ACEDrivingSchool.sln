@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACEDrivingSchool", "ACEDrivingSchool\ACEDrivingSchool.csproj", "{7A3569CE-5CA0-467A-9DBF-BE5E70414FAF}"
 EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "ACEDrivingSchoolDocumentation", "ACEDrivingSchoolDocumentation\ACEDrivingSchoolDocumentation.shfbproj", "{5A4EF581-A812-4CF1-8F2B-A656D308F218}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7A3569CE-5CA0-467A-9DBF-BE5E70414FAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A3569CE-5CA0-467A-9DBF-BE5E70414FAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A3569CE-5CA0-467A-9DBF-BE5E70414FAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A4EF581-A812-4CF1-8F2B-A656D308F218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A4EF581-A812-4CF1-8F2B-A656D308F218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A4EF581-A812-4CF1-8F2B-A656D308F218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A4EF581-A812-4CF1-8F2B-A656D308F218}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

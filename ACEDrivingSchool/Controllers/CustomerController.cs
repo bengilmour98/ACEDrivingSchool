@@ -27,7 +27,7 @@ namespace ACEDrivingSchool.Controllers
         }
 
         
-        // GET: Customer
+        
         
         /// <summary>
         /// A method to display the customer home. The program then checks to see if the user is part of the customer role

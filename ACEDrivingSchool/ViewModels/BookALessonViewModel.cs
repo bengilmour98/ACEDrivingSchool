@@ -8,7 +8,6 @@ namespace ACEDrivingSchool.ViewModels
 {
     public class BookALessonViewModel
     {
-        //public Customer Customer { get; set; }
         public Lesson Lesson { get; set; }
         public IEnumerable<Duration> Durations { get; set; }
         public IEnumerable<Customer> Customers { get; set; }

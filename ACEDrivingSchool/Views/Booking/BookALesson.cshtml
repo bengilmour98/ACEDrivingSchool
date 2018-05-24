@@ -1,12 +1,17 @@
 ﻿<head>
     <link rel="stylesheet" href="~/Content/fullcalendar.css" />
     <link rel="stylesheet" href="~/Content/fullcalendar.print.css" media="print"/>
-    
+
+    <link rel="stylesheet" href="~/Content/toastr.css"/>
+    <script type="text/javascript" src="/Scripts/toastr.js"></script>
+
     <script type="text/javascript" src="/scripts/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="/scripts/moment.min.js"></script>
     <script type="text/javascript" src="/scripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="/scripts/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="/scripts/datejs.js"></script>
+
+    
 
     <script src="~/Scripts/moment.min.js"></script>
     <script src="~/Scripts/fullcalendar/fullcalendar.min.js"></script>
@@ -121,11 +126,11 @@
             function fetchLessonsAndRenderCalendar() {
                 console.log(lessons);
                 $.ajax({
-                    type: "GET",
-                    url: '/booking/GetLessonsByInstructorId',
-                    success: function(data) {
+                        type: "GET",
+                        url: '/booking/GetLessonsByInstructorId'
+                    }).done(function(data) {
                         $.each(data,
-                            function (i, v) {
+                            function(i, v) {
 
                                 var durationString = "";
                                 if (v.DurationId == 1) {
@@ -145,11 +150,11 @@
                             });
 
                         generateCalendar(lessons);
-                    },
-                    error: function(error) {
-                        alert('Loading failed');
-                    }
-                });
+                    })
+                    .fail(function(error) {
+                        toastr.fail("Failed to load lessons");
+                    });
+
             }
 
             function generateCalendar(lessons) {
@@ -201,16 +206,15 @@
                     $.ajax({
                         type: "POST",
                         url: "/booking/DeleteLesson",
-                        data: { 'lessonId': selectedEvent.lessonId },
-                        success: function(data) {
-                            if (data.status) {
-                                fetchLessonsAndRenderCalendar();
-                                $('#myModal').modal('hide');
-                            }
-                        },
-                        error: function() {
-                            alert('Failed');
+                        data: { 'lessonId': selectedEvent.lessonId }
+                    }).done(function(data) {
+                        if (data.status) {
+                            fetchLessonsAndRenderCalendar();
+                            $('#myModal').modal('hide');
+                            toastr.success("Lesson removed");
                         }
+                    }).fail(function() {
+                        toastr.fail("Lesson was not removed. An unknown error occured.");
                     });
                 }
             });
@@ -222,35 +226,33 @@
             }
 
 
-            $('#btnSave').click(function () {
+            $('#btnSave').click(function() {
                 var timeAvailable = true;
 
-                alert('Save click works');
-                
 
                 if ($('#txtDate').val().trim() == "") {
-                    alert('Date/Time required');
+                    toastr.error("A date is required");
                     return;
                 }
 
                 if ($('#ddDuration').val().trim() == "") {
-                    alert('Duration Required');
+                    toastr.error("A duration is required");
                     return;
                 }
 
-                
-                lessons.forEach(function (element) {
 
-                    
+                lessons.forEach(function(element) {
+
+
                     //the date of the new booking
                     var currentDate = $('#txtDate').val();
                     var convertedCurrentDate = Date.parse(currentDate);
-                    
+
 
                     //duration of new booking
                     var durationFromForm = $('#ddDuration').val();
-                    
-                    
+
+
                     //duration to be added to the current bookings start date
                     var hoursToAdd = 0;
                     if (durationFromForm == "1 Hour") {
@@ -259,16 +261,13 @@
                         hoursToAdd = 2;
                     }
 
-                    
+
                     //end date of the current lesson
 
                     var currentEndDate = moment(convertedCurrentDate);
                     currentEndDate = currentEndDate.add(hoursToAdd, "hours");
                     currentEndDate = currentEndDate.format("DD/MM/YYYY HH:mm A");
-                    
-                    
-                    
-                    
+
 
                     //start date of the current lesson in lessons
                     var startDate = moment(element.start).format("DD/MM/YYYY HH:mm A");
@@ -286,23 +285,21 @@
                     //formats the end date
                     endDate = endDate.format("DD/MM/YYYY HH:mm A");
 
-                    
+
                     //checks that the start date does not fall within a previous lesson
                     if (currentDate >= startDate && currentDate < endDate) {
-                        
+
                         timeAvailable = false;
-                        alert(timeAvailable + "Start date check");
+
 
                     }
                     //checks that a booking will not run over into the next lesson
-                    else if (currentDate < startDate && currentEndDate > startDate)
-                    {
-                        
+                    else if (currentDate < startDate && currentEndDate > startDate) {
+
                         timeAvailable = false;
-                        alert(timeAvailable + "Duration check");
+
                     }
 
-                    
 
                 });
 
@@ -318,36 +315,34 @@
                         InstructorId: null,
                         Paid: false
                     }
-                    alert('Save function will be called');
+
                     saveLesson(data);
                 } else {
-                    alert('This time is unavailable, please select another');
+                    toastr.error("This time is not available, please select another");
                 }
-                
-            
-        });
 
-        function saveLesson(data) {
-            $.ajax({
-                type: "POST",
-                url: "/booking/SaveLesson",
-                data: data,
-                success: function(data) {
+
+            });
+
+            function saveLesson(data) {
+                $.ajax({
+                    type: "POST",
+                    url: "/booking/SaveLesson",
+                    data: data
+                }).done(function(data) {
                     if (data.status) {
                         fetchLessonsAndRenderCalendar();
                         $('#myModalSave').modal('hide');
                     }
-                    alert('Success');
+                    toastr.success("Lesson added");
                     $('#txtDate').val('');
                     $('#ddDuration').val('');
-                },
-                error: function() {
-                    alert('Saving failed');
-                }
-            });
-        }
+                }).fail(function() {
+                    toastr.fail("Lesson was not added. An unknown error occured.");
+                });
 
-        
+            }
+
 
     });
     </script>
@@ -355,3 +350,4 @@
 }
 
 
+)

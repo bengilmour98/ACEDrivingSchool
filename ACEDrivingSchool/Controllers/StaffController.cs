@@ -22,6 +22,11 @@ namespace ACEDrivingSchool.Controllers
             return Redirect("/Account/StaffLogin");
         }
 
+        /// <summary>
+        /// Method to load the edit lesson prices page, with access only allowed to an admin.
+        /// </summary>
+        /// <returns>Edit lesson prices view</returns>
+        [Authorize(Roles = RoleNameConstants.Admin)]
         public ActionResult EditLessonPrices()
         {
             return View();

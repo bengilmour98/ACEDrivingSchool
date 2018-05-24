@@ -9,5 +9,6 @@ namespace ACEDrivingSchool.ViewModels
     public class PayLessonViewModel
     {
         public Lesson Lesson { get; set; }
+        
     }
 }
