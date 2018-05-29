@@ -239,7 +239,7 @@ namespace ACEDrivingSchool.Controllers
             var stripePublishKey = ConfigurationManager.AppSettings["stripePublishableKey"];
             ViewBag.StripePublishKey = stripePublishKey;
 
-            TempData["LessonPrice"] = lesson.Duration.Price*100;
+            TempData["Price"] = lesson.Duration.Price*100;
 
             return View("PayLesson", viewModel);
         }
@@ -269,7 +269,18 @@ namespace ACEDrivingSchool.Controllers
             var customers = new StripeCustomerService();
             var charges = new StripeChargeService();
 
-            
+            int newAmount = 0;
+
+            int oldValue = int.Parse(TempData["Price"].ToString());
+
+            if (oldValue == 4000)
+            {
+                newAmount = 4000;
+            }
+            else
+            {
+                newAmount = 2000;
+            }
 
             var customer = customers.Create(new StripeCustomerCreateOptions
             {
@@ -279,7 +290,7 @@ namespace ACEDrivingSchool.Controllers
 
             var charge = charges.Create(new StripeChargeCreateOptions
             {
-                Amount = amount,
+                Amount = newAmount,
                 Description = "Lessons",
                 Currency = "gbp",
                 CustomerId = customer.Id
