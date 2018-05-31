@@ -1,11 +1,27 @@
-﻿using System.Web;
+﻿// ***********************************************************************
+// Assembly         : ACEDrivingSchool
+// Author           : Ben
+// Created          : 05-29-2018
+//
+// Last Modified By : Ben
+// Last Modified On : 05-29-2018
+// ***********************************************************************
+
+using System.Web;
 using System.Web.Optimization;
 
 namespace ACEDrivingSchool
 {
+    /// <summary>
+    /// Class BundleConfig.
+    /// </summary>
     public class BundleConfig
     {
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
+        /// <summary>
+        /// Registers the bundles.
+        /// </summary>
+        /// <param name="bundles">The bundles.</param>
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(

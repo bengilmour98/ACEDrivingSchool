@@ -1,4 +1,13 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : ACEDrivingSchool
+// Author           : Ben
+// Created          : 05-29-2018
+//
+// Last Modified By : Ben
+// Last Modified On : 05-29-2018
+// ***********************************************************************
+
+using System;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -9,9 +18,16 @@ using ACEDrivingSchool.Models;
 
 namespace ACEDrivingSchool
 {
+    /// <summary>
+    /// Class Startup.
+    /// </summary>
     public partial class Startup
     {
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
+        /// <summary>
+        /// Configures the authentication.
+        /// </summary>
+        /// <param name="app">The application.</param>
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context, user manager and signin manager to use a single instance per request

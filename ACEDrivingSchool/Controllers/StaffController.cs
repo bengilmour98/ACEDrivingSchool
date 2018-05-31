@@ -1,4 +1,13 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : ACEDrivingSchool
+// Author           : Ben
+// Created          : 04-16-2018
+//
+// Last Modified By : Ben
+// Last Modified On : 05-24-2018
+// ***********************************************************************
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,6 +16,10 @@ using ACEDrivingSchool.Models;
 
 namespace ACEDrivingSchool.Controllers
 {
+    /// <summary>
+    /// Class StaffController.
+    /// </summary>
+    /// <seealso cref="System.Web.Mvc.Controller" />
     public class StaffController : Controller
     {
         // GET: Staff

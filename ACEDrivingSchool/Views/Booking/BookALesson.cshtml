@@ -123,6 +123,7 @@
 
             fetchLessonsAndRenderCalendar();
 
+            //this method will fetch the lessons based on a particular instructorId and then call a method to render the calendar, displaying those lessons
             function fetchLessonsAndRenderCalendar() {
                 console.log(lessons);
                 $.ajax({
@@ -131,7 +132,7 @@
                     }).done(function(data) {
                         $.each(data,
                             function(i, v) {
-
+                                //pushes each of the lessons retrieved onto a local array of lessons
                                 var durationString = "";
                                 if (v.DurationId == 1) {
                                     durationString = "1 Hour";
@@ -157,14 +158,17 @@
 
             }
 
+            //This method will generate the calendar based on the local array of lessons
             function generateCalendar(lessons) {
-
+                //destroys the calendar before it creates a new one, incase one was there before
                 $('#calendar').fullCalendar('destroy');
 
+                //renders that calendar on the page
                 $('#calendar').fullCalendar({
                     contentHeight: 400,
                     defaultDate: new Date(),
                     timeFormat: 'h(:mm)a',
+                    //adds buttons to the head for navigation
                     header: {
                         left: 'prev, next today',
                         center: 'title',
@@ -173,6 +177,7 @@
                     eventLimit: true,
                     eventColor: '#378006',
                     events: lessons,
+                    //this section is used to add details to the modal when a lesson is clicked. This allows the user to view more in depth details
                     eventClick: function(calEvent, jsEvent, view) {
                         selectedEvent = calEvent;
                         $('#myModal #eventTitle').text(calEvent.title);
@@ -183,9 +188,11 @@
                         $description.append($('<p/>').html('<b>Paid: <b/>' + calEvent.paid));
                         $('#myModal #pDetails').empty().html($description);
 
+                        //loads the modal for displaying the details
                         $('#myModal').modal();
                     },
                     selectable: true,
+                    //allows the user to click on a date to add a lesson
                     select: function(start, end) {
                         selectedEvent = {
                             lessonId: 0,
@@ -195,20 +202,24 @@
                             duration: '',
                             paid: false
                         }
+                        //calls method to add the booking
                         addBooking();
                         $('#calendar').fullCalendar('unselect');
                     }
                 });
             }
 
+            //used to delete lessons from the database
             $('#btnDelete').click(function() {
                 if (selectedEvent != null && confirm('Are you sure you wish to delete this lesson?')) {
                     $.ajax({
                         type: "POST",
                         url: "/booking/DeleteLesson",
+                        //passes the lessonID in as a variable
                         data: { 'lessonId': selectedEvent.lessonId }
                     }).done(function(data) {
                         if (data.status) {
+                            //rerenders the calendar and hides the modal
                             fetchLessonsAndRenderCalendar();
                             $('#myModal').modal('hide');
                             toastr.success("Lesson removed");
@@ -219,22 +230,24 @@
                 }
             });
 
-
+            //Displays the modal for adding a booking
             function addBooking() {
 
                 $('#myModalSave').modal();
             }
 
-
+            //method for saving a lesson to the database when the user has input valid selections
             $('#btnSave').click(function() {
                 var timeAvailable = true;
 
 
+                //checks that the customer has selected a duration
                 if ($('#txtDate').val().trim() == "") {
                     toastr.error("A date is required");
                     return;
                 }
 
+                //checks that the customer has selected a duration
                 if ($('#ddDuration').val().trim() == "") {
                     toastr.error("A duration is required");
                     return;
@@ -305,6 +318,7 @@
 
                 console.log(timeAvailable);
 
+                //if the time is available, it will build a lesson based on the details entered by the user
                 if (timeAvailable == true) {
                     var data = {
                         Id: $('#hdLessonId').val(),
@@ -315,7 +329,7 @@
                         InstructorId: null,
                         Paid: false
                     }
-
+                    //calls the method to save the lesson
                     saveLesson(data);
                 } else {
                     toastr.error("This time is not available, please select another");
@@ -324,30 +338,56 @@
 
             });
 
+            //method for saving the lesson to the database using an ajax call
             function saveLesson(data) {
                 $.ajax({
                     type: "POST",
                     url: "/booking/SaveLesson",
+                    //passes in the created lesson as a variable
                     data: data
                 }).done(function(data) {
                     if (data.status) {
+                        //rerenders the calendar and hides the modal
                         fetchLessonsAndRenderCalendar();
                         $('#myModalSave').modal('hide');
                     }
                     toastr.success("Lesson added");
                     $('#txtDate').val('');
                     $('#ddDuration').val('');
+
+                    //Section used for sending an sms message to the user. This code does not work but I left it in to show attempt
+                    /*var messageData = {
+                        Id: $('#hdLessonId').val(),
+                        DateTimeOfLesson: $('#txtDate').val(),
+                        DurationId: $('#ddDuration').val(),
+                        BookingDate: null,
+                        CustomerId: null,
+                        InstructorId: null,
+                        Paid: false
+                    }
+                    sendSms(messageData);
+
+                    */
+
                 }).fail(function() {
                     toastr.fail("Lesson was not added. An unknown error occured.");
                 });
 
             }
 
+            //method for calling the action to send a sms message. Does not work so commented out.
+            /*function sendSms(messageData) {
+                $.ajax({
+                    type: "POST",
+                    url: "/sms/SendMessage",
+                    data: messageData
+                });
+            }*/
 
-    });
+
+        });
     </script>
 
 }
 
 
-)

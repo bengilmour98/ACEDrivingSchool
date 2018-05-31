@@ -1,4 +1,13 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : ACEDrivingSchool
+// Author           : Ben
+// Created          : 05-29-2018
+//
+// Last Modified By : Ben
+// Last Modified On : 05-29-2018
+// ***********************************************************************
+
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -15,17 +24,33 @@ using Microsoft.Owin.Security.Provider;
 
 namespace ACEDrivingSchool.Controllers
 {
+    /// <summary>
+    /// Class AccountController.
+    /// </summary>
+    /// <seealso cref="System.Web.Mvc.Controller" />
     [Authorize]
     public class AccountController : Controller
     {
+        /// <summary>
+        /// The context
+        /// </summary>
         private ApplicationDbContext _context;
 
 
 
+        /// <summary>
+        /// The sign in manager
+        /// </summary>
         private ApplicationSignInManager _signInManager;
+        /// <summary>
+        /// The user manager
+        /// </summary>
         private ApplicationUserManager _userManager;
 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccountController"/> class.
+        /// </summary>
         public AccountController()
         {
             _context = new ApplicationDbContext();
@@ -35,18 +60,31 @@ namespace ACEDrivingSchool.Controllers
 
 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccountController"/> class.
+        /// </summary>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="signInManager">The sign in manager.</param>
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
+        /// <summary>
+        /// Gets the sign in manager.
+        /// </summary>
+        /// <value>The sign in manager.</value>
         public ApplicationSignInManager SignInManager
         {
             get { return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>(); }
             private set { _signInManager = value; }
         }
 
+        /// <summary>
+        /// Gets the user manager.
+        /// </summary>
+        /// <value>The user manager.</value>
         public ApplicationUserManager UserManager
         {
             get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
@@ -55,6 +93,11 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // GET: /Account/Login
+        /// <summary>
+        /// Logins the specified return URL.
+        /// </summary>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns>ActionResult.</returns>
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -62,13 +105,13 @@ namespace ACEDrivingSchool.Controllers
             return View();
         }
 
-        
+
         /// <summary>
         /// A slightly edited customer log in system. Once logged in, the user will be taken to the customer home page.
         /// </summary>
         /// <param name="model">takes the model from the submitted form</param>
-        /// <param name="returnUrl"></param>
-        /// <returns></returns>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -101,7 +144,7 @@ namespace ACEDrivingSchool.Controllers
         /// <summary>
         /// Method for loading the staffLogin page
         /// </summary>
-        /// <param name="returnUrl"></param>
+        /// <param name="returnUrl">The return URL.</param>
         /// <returns>returns the staff login view</returns>
         [AllowAnonymous]
         public ActionResult StaffLogin(string returnUrl)
@@ -114,8 +157,8 @@ namespace ACEDrivingSchool.Controllers
         /// This is a custom log in method for signing staff members in. Once logged in, the user will be redirected to the staff home page.
         /// </summary>
         /// <param name="model">takes the model from the submitted form from the staff login</param>
-        /// <param name="returnUrl"></param>
-        /// <returns></returns>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -147,6 +190,13 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // GET: /Account/VerifyCode
+        /// <summary>
+        /// Verifies the code.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <param name="rememberMe">if set to <c>true</c> [remember me].</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
@@ -161,6 +211,11 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // POST: /Account/VerifyCode
+        /// <summary>
+        /// Verifies the code.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -192,13 +247,21 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // GET: /Account/Register
+        /// <summary>
+        /// Registers this instance.
+        /// </summary>
+        /// <returns>ActionResult.</returns>
         [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
 
-        //A method to get the instructor ID that has the least amount of assigned students. This is to check that the instructor with the least students is assigned any new student that registers
+        
+        /// <summary>
+        /// Gets the random instructor identifier.
+        /// </summary>
+        /// <returns>System.Int32.</returns>
         public int GetRandomInstructorId()
         {
             int lowestStudentInstructorId = 0;
@@ -227,6 +290,11 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // POST: /Account/Register
+        /// <summary>
+        /// Registers the specified model.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -264,9 +332,9 @@ namespace ACEDrivingSchool.Controllers
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     return RedirectToAction("CustomerHome", "Customer");
                 }
@@ -280,6 +348,12 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // GET: /Account/ConfirmEmail
+        /// <summary>
+        /// Confirms the email.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="code">The code.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
@@ -294,6 +368,10 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // GET: /Account/ForgotPassword
+        /// <summary>
+        /// Forgots the password.
+        /// </summary>
+        /// <returns>ActionResult.</returns>
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
@@ -302,6 +380,11 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // POST: /Account/ForgotPassword
+        /// <summary>
+        /// Allows the user to reset their password if they forget it
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -330,6 +413,10 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // GET: /Account/ForgotPasswordConfirmation
+        /// <summary>
+        /// Loads forgotpasswordconfirmation view
+        /// </summary>
+        /// <returns>ActionResult.</returns>
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
@@ -338,6 +425,11 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // GET: /Account/ResetPassword
+        /// <summary>
+        /// Resets the password.
+        /// </summary>
+        /// <param name="code">The code.</param>
+        /// <returns>ActionResult.</returns>
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
@@ -346,6 +438,11 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // POST: /Account/ResetPassword
+        /// <summary>
+        /// Resets the password.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -375,6 +472,10 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // GET: /Account/ResetPasswordConfirmation
+        /// <summary>
+        /// Resets the password confirmation.
+        /// </summary>
+        /// <returns>ActionResult.</returns>
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
@@ -383,6 +484,12 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // POST: /Account/ExternalLogin
+        /// <summary>
+        /// Method for external login
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns>ActionResult.</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -395,6 +502,12 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // GET: /Account/SendCode
+        /// <summary>
+        /// Sends the code.
+        /// </summary>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <param name="rememberMe">if set to <c>true</c> [remember me].</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
@@ -417,6 +530,11 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // POST: /Account/SendCode
+        /// <summary>
+        /// Sends the code.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -439,6 +557,11 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // GET: /Account/ExternalLoginCallback
+        /// <summary>
+        /// Checkst that external login has worked
+        /// </summary>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
@@ -470,6 +593,12 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // POST: /Account/ExternalLoginConfirmation
+        /// <summary>
+        /// Externals login confirmation.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -511,6 +640,10 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // POST: /Account/LogOff
+        /// <summary>
+        /// Logs the user off.
+        /// </summary>
+        /// <returns>ActionResult.</returns>
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public ActionResult LogOff()
@@ -522,7 +655,7 @@ namespace ACEDrivingSchool.Controllers
         /// <summary>
         /// This method is called directly after a user account is removed. It is almost identical to the LogOff method.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>ActionResult.</returns>
         public ActionResult LogOffAfterRemove()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
@@ -531,12 +664,20 @@ namespace ACEDrivingSchool.Controllers
 
         //
         // GET: /Account/ExternalLoginFailure
+        /// <summary>
+        /// Externals the login failure.
+        /// </summary>
+        /// <returns>ActionResult.</returns>
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
             return View();
         }
 
+        /// <summary>
+        /// Releases unmanaged resources and optionally releases managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -560,7 +701,7 @@ namespace ACEDrivingSchool.Controllers
         /// <summary>
         /// Method for removing a users account from the database
         /// </summary>
-        /// <returns></returns>
+        /// <returns>ActionResult.</returns>
         public ActionResult RemoveAccount()
         {
             var id = User.Identity.GetUserId();
@@ -584,7 +725,7 @@ namespace ACEDrivingSchool.Controllers
         /// This calls the edit details method for customers
         /// </summary>
         /// <returns>Edit View, passing a model constructed from the database</returns>
-        
+
         public ActionResult Edit()
         {
             var id = User.Identity.GetUserId();
@@ -656,8 +797,15 @@ namespace ACEDrivingSchool.Controllers
 
         #region Helpers
         // Used for XSRF protection when adding external logins
+        /// <summary>
+        /// The XSRF key
+        /// </summary>
         private const string XsrfKey = "XsrfId";
 
+        /// <summary>
+        /// Gets the authentication manager.
+        /// </summary>
+        /// <value>The authentication manager.</value>
         private IAuthenticationManager AuthenticationManager
         {
             get
@@ -666,6 +814,10 @@ namespace ACEDrivingSchool.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds the errors.
+        /// </summary>
+        /// <param name="result">The result.</param>
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
@@ -674,6 +826,11 @@ namespace ACEDrivingSchool.Controllers
             }
         }
 
+        /// <summary>
+        /// Redirects to local.
+        /// </summary>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns>ActionResult.</returns>
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
@@ -683,13 +840,28 @@ namespace ACEDrivingSchool.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        /// <summary>
+        /// Class ChallengeResult.
+        /// </summary>
+        /// <seealso cref="System.Web.Mvc.HttpUnauthorizedResult" />
         internal class ChallengeResult : HttpUnauthorizedResult
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ChallengeResult"/> class.
+            /// </summary>
+            /// <param name="provider">The provider.</param>
+            /// <param name="redirectUri">The redirect URI.</param>
             public ChallengeResult(string provider, string redirectUri)
                 : this(provider, redirectUri, null)
             {
             }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ChallengeResult"/> class.
+            /// </summary>
+            /// <param name="provider">The provider.</param>
+            /// <param name="redirectUri">The redirect URI.</param>
+            /// <param name="userId">The user identifier.</param>
             public ChallengeResult(string provider, string redirectUri, string userId)
             {
                 LoginProvider = provider;
@@ -697,10 +869,26 @@ namespace ACEDrivingSchool.Controllers
                 UserId = userId;
             }
 
+            /// <summary>
+            /// Gets or sets the login provider.
+            /// </summary>
+            /// <value>The login provider.</value>
             public string LoginProvider { get; set; }
+            /// <summary>
+            /// Gets or sets the redirect URI.
+            /// </summary>
+            /// <value>The redirect URI.</value>
             public string RedirectUri { get; set; }
+            /// <summary>
+            /// Gets or sets the user identifier.
+            /// </summary>
+            /// <value>The user identifier.</value>
             public string UserId { get; set; }
 
+            /// <summary>
+            /// Enables processing of the result of an action method by a custom type that inherits from the <see cref="T:System.Web.Mvc.ActionResult" /> class.
+            /// </summary>
+            /// <param name="context">The context in which the result is executed. The context information includes the controller, HTTP content, request context, and route data.</param>
             public override void ExecuteResult(ControllerContext context)
             {
                 var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
