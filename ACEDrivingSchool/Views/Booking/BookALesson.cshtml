@@ -233,6 +233,15 @@
             //Displays the modal for adding a booking
             function addBooking() {
 
+                $('#txtDate').val(selectedEvent.start.format("DD/MM/YYYY HH:mm A"));
+                var durationValue = 0;
+
+                if (selectedEvent.duration == "1 Hour") {
+                    durationValue = 1;
+                } else {
+                    durationValue = 2;
+                }
+                $('#ddDuration').val(durationValue);
                 $('#myModalSave').modal();
             }
 
